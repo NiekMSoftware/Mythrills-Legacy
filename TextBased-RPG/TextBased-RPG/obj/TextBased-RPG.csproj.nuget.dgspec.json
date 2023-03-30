@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\suppy\\Documents\\C# Projects\\Noorderpoort\\Project\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj": {}
+    "C:\\Users\\suppy\\Documents\\GitHub\\Personal\\Mythrills-Legacy\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj": {}
   },
   "projects": {
-    "C:\\Users\\suppy\\Documents\\C# Projects\\Noorderpoort\\Project\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj": {
+    "C:\\Users\\suppy\\Documents\\GitHub\\Personal\\Mythrills-Legacy\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\suppy\\Documents\\C# Projects\\Noorderpoort\\Project\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj",
+        "projectUniqueName": "C:\\Users\\suppy\\Documents\\GitHub\\Personal\\Mythrills-Legacy\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj",
         "projectName": "TextBased-RPG",
-        "projectPath": "C:\\Users\\suppy\\Documents\\C# Projects\\Noorderpoort\\Project\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj",
+        "projectPath": "C:\\Users\\suppy\\Documents\\GitHub\\Personal\\Mythrills-Legacy\\TextBased-RPG\\TextBased-RPG\\TextBased-RPG.csproj",
         "packagesPath": "C:\\Users\\suppy\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\suppy\\Documents\\C# Projects\\Noorderpoort\\Project\\TextBased-RPG\\TextBased-RPG\\obj\\",
+        "outputPath": "C:\\Users\\suppy\\Documents\\GitHub\\Personal\\Mythrills-Legacy\\TextBased-RPG\\TextBased-RPG\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\suppy\\AppData\\Roaming\\NuGet\\NuGet.Config"
