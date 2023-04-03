@@ -30,6 +30,9 @@ public class Player
     
     //Leaping
     public int leap = 10;
+    
+    //Speed
+    public int speed = 25;
 
     /*
      * Level Up Material

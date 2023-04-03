@@ -4,9 +4,9 @@ namespace RPG;
 
 public class PlayerInput
 {
-    private Encounters enemyEncounter = new Encounters();
+    private static EnemyStats _enemy = new EnemyStats();
     private static Random rand = new Random();
-    
+
     /*
      * Receive the Player's Input
      */
@@ -42,7 +42,7 @@ public class PlayerInput
     private void Attack()
     {
          //Damage the player
-            int damageTaken = (Encounters.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(2, 10);
+            int damageTaken = (EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(2, 10);
 
             if (damageTaken < 0)
                 damageTaken = 0;
@@ -67,19 +67,19 @@ public class PlayerInput
                 string[] attackText = new[]
                 {
                     $"With haste you surge forth, your sword flying through your hands!" +
-                    $"\nAs you pass the {Encounters.nameEnemy} strikes you" +
+                    $"\nAs you pass the {EnemyStats.nameEnemy} strikes you" +
                     $"\nYou dealt {dealDamage} damage!" +
                     $"\nYou received {damageTaken} damage!",
-                    $"You run towards the {Encounters.nameEnemy} with your blade in two hands, you strike! " +
-                    $"\nYou managed to deal {dealDamage} to the {Encounters.nameEnemy}!" +
-                    $"\nThe {Encounters.nameEnemy} managed to stab you ever so slightly and dealt {damageTaken} damage!",
-                    $"You quickly try to evade the {Encounters.nameEnemy} and strike its legs dealing {dealDamage} damage!" +
-                    $"\nUnfortunately, the {Encounters.nameEnemy} managed to throw it's weapon in your stomach..." +
-                    $"\nThe {Encounters.nameEnemy} dealt {damageTaken} damage!",
+                    $"You run towards the {EnemyStats.nameEnemy} with your blade in two hands, you strike! " +
+                    $"\nYou managed to deal {dealDamage} to the {EnemyStats.nameEnemy}!" +
+                    $"\nThe {EnemyStats.nameEnemy} managed to stab you ever so slightly and dealt {damageTaken} damage!",
+                    $"You quickly try to evade the {EnemyStats.nameEnemy} and strike its legs dealing {dealDamage} damage!" +
+                    $"\nUnfortunately, the {EnemyStats.nameEnemy} managed to throw it's weapon in your stomach..." +
+                    $"\nThe {EnemyStats.nameEnemy} dealt {damageTaken} damage!",
                     $"With anger and yet a lot of fear, your sword trembling but heroic in your hands!" +
-                    $"\nYou charge at the {Encounters.nameEnemy} piercing your sword through the {Encounters.nameEnemy}'s chest!" +
+                    $"\nYou charge at the {EnemyStats.nameEnemy} piercing your sword through the {EnemyStats.nameEnemy}'s chest!" +
                     $"\nYou dealt {dealDamage} damage!" +
-                    $"\nThe {Encounters.nameEnemy} managed to hit you as hard back dealing {damageTaken} damage!"
+                    $"\nThe {EnemyStats.nameEnemy} managed to hit you as hard back dealing {damageTaken} damage!"
                 };
 
                 //randomize attack texts
@@ -91,7 +91,7 @@ public class PlayerInput
 
             //Lower health
             RunGame.currentPlayer.health -= damageTaken;
-            Encounters.healthEnemy -= dealDamage;
+            EnemyStats.healthEnemy -= dealDamage;
 
             Console.ReadLine();
     }
@@ -99,7 +99,7 @@ public class PlayerInput
     private void Defend()
     {
           //The power of the enemy will be lessened
-            int damageTaken = (Encounters.powerEnemy / 3) - RunGame.currentPlayer.armorValue;
+            int damageTaken = (EnemyStats.powerEnemy / 3) - RunGame.currentPlayer.armorValue;
             if (damageTaken < 0)
                 damageTaken = 0;
 
@@ -113,15 +113,15 @@ public class PlayerInput
             string text = "";
             string[] defendText = new[]
             {
-                $"As the {Encounters.nameEnemy} prepares to strike you down, you ready your sword in a defensive stance." +
+                $"As the {EnemyStats.nameEnemy} prepares to strike you down, you ready your sword in a defensive stance." +
                 $"\nYou lose {damageTaken} health and dealt {dealDamage} damage!",
-                $"The {Encounters.nameEnemy} charges at you ever so magnificent, you hold your sword with both hands in a" +
+                $"The {EnemyStats.nameEnemy} charges at you ever so magnificent, you hold your sword with both hands in a" +
                 $" effective yet majestic stance. " +
                 $"\nYou lost {damageTaken} health, but managed to deal {dealDamage} damage with a marvelous swing!",
-                $"As the {Encounters.nameEnemy} charges at you rapidly, you ready yourself from impact." +
+                $"As the {EnemyStats.nameEnemy} charges at you rapidly, you ready yourself from impact." +
                 $"\nWith courage you release a sigh and cough up blood from the impact," +
                 $"\nyou lost {damageTaken} health..." +
-                $"\nthe {Encounters.nameEnemy} looks afraid, as the wound you inflicted was more than it could endure!" +
+                $"\nthe {EnemyStats.nameEnemy} looks afraid, as the wound you inflicted was more than it could endure!" +
                 $"\nYou dealt {dealDamage} damage..."
             };
 
@@ -131,7 +131,7 @@ public class PlayerInput
             //Make an array to defend and get health back from it
             string[] defendTextHealth = new[]
             {
-                $"As you successfully defend yourself against the {Encounters.nameEnemy}," +
+                $"As you successfully defend yourself against the {EnemyStats.nameEnemy}," +
                 $"\nyou managed to steal it's life and use it gain {gainHealth} health!"
             };
 
@@ -154,7 +154,7 @@ public class PlayerInput
                 Console.WriteLine(text);
                 //Lower health
                 RunGame.currentPlayer.health -= damageTaken;
-                Encounters.healthEnemy -= dealDamage;
+                EnemyStats.healthEnemy -= dealDamage;
             }
 
             Console.ReadLine();
@@ -166,19 +166,19 @@ public class PlayerInput
         if (rand.Next(0, 2) == 0)
         {
             //Calculate the amount of damage being taken
-            int damageTaken = Encounters.powerEnemy - RunGame.currentPlayer.armorValue;
+            int damageTaken = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
             if (damageTaken < 0)
                 damageTaken = 0;
 
             //Continue story
-            Console.WriteLine("As you sprint away from the " + Encounters.nameEnemy +
+            Console.WriteLine("As you sprint away from the " + EnemyStats.nameEnemy +
                               ", its strike catches you in the back, sending you sprawling onto the ground");
             Console.WriteLine("You lose " + damageTaken + " health and are unable to escape.");
             Console.ReadLine();
         }
         else
         {
-            Console.WriteLine("You ran away from the " + Encounters.nameEnemy + " successfully escaped!");
+            Console.WriteLine("You ran away from the " + EnemyStats.nameEnemy + " successfully escaped!");
             Console.ReadLine();
             //go to store - CONCEPT
         }
@@ -194,14 +194,14 @@ public class PlayerInput
             if (RunGame.currentPlayer.potions == 0)
             {
                 //Calculate how much health we will lose upon no flasks
-                int damageTaken = Encounters.powerEnemy - RunGame.currentPlayer.armorValue;
+                int damageTaken = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
                 if (damageTaken < 0)
                     damageTaken = 0;
 
                 //Fail to heal
                 Console.WriteLine("As you desperately grasp for a potion in your pouch, " +
                                   "all that you feel are empty glass flasks");
-                Console.WriteLine("The " + Encounters.nameEnemy + " strikes you with a mighty blow and you lose "
+                Console.WriteLine("The " + EnemyStats.nameEnemy + " strikes you with a mighty blow and you lose "
                                   + damageTaken + " health!");
             }
             else
@@ -210,7 +210,7 @@ public class PlayerInput
                 int _potionValue = RunGame.currentPlayer.potionValue;
 
                 //Declare how much damage you will take
-                int damageTaken = ((Encounters.powerEnemy / 2) + rand.Next(0, 5)) - RunGame.currentPlayer.armorValue;
+                int damageTaken = ((EnemyStats.powerEnemy / 2) + rand.Next(0, 5)) - RunGame.currentPlayer.armorValue;
                 if (damageTaken < 0)
                     damageTaken = 0;
 
@@ -238,7 +238,7 @@ public class PlayerInput
                 //Take damage
                 Console.ReadLine();
                 Console.Clear();
-                Console.WriteLine("As you were occupied, the " + Encounters.nameEnemy + " advanced and struck.");
+                Console.WriteLine("As you were occupied, the " + EnemyStats.nameEnemy + " advanced and struck.");
                 Console.WriteLine("You lose " + damageTaken + " health!");
                 RunGame.currentPlayer.health -= damageTaken;
 
@@ -251,7 +251,7 @@ public class PlayerInput
     {
         int nonDamageTaken = 0;
 
-            int damageTaken = (Encounters.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(8, 22);
+            int damageTaken = (EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(8, 22);
 
             //Make the Leap rng, so there is a chance you will get hit
             if (rand.Next(0, RunGame.currentPlayer.leap) == 0)
@@ -259,17 +259,17 @@ public class PlayerInput
                 string text = "";
                 string[] leapFailure = new[]
                 {
-                    "As you tried to leap through your enemy's legs, the " + Encounters.nameEnemy +
+                    "As you tried to leap through your enemy's legs, the " + EnemyStats.nameEnemy +
                     " catches you while you leaped.." +
-                    "\nThe " + Encounters.nameEnemy + " sliced you brutally and dealt " + damageTaken + " damage!",
+                    "\nThe " + EnemyStats.nameEnemy + " sliced you brutally and dealt " + damageTaken + " damage!",
                     "You take a deep breath, controlling your breathing to getting ready to dodge the " +
-                    Encounters.nameEnemy + ", " +
-                    "\nunnoticed the " + Encounters.nameEnemy +
+                    EnemyStats.nameEnemy + ", " +
+                    "\nunnoticed the " + EnemyStats.nameEnemy +
                     " charges at you and pins you down with its sword through your chest..." +
-                    "\nThe " + Encounters.nameEnemy + " dealt " + damageTaken + " damage!",
-                    "You quickly try to evade the " + Encounters.nameEnemy +
-                    " attack by crouching! Unfortunately, the " + Encounters.nameEnemy + " managed to hit" +
-                    "\nyou in the head with it's sword... \nThe " + Encounters.nameEnemy + " dealt " + damageTaken +
+                    "\nThe " + EnemyStats.nameEnemy + " dealt " + damageTaken + " damage!",
+                    "You quickly try to evade the " + EnemyStats.nameEnemy +
+                    " attack by crouching! Unfortunately, the " + EnemyStats.nameEnemy + " managed to hit" +
+                    "\nyou in the head with it's sword... \nThe " + EnemyStats.nameEnemy + " dealt " + damageTaken +
                     " damage!"
                 };
 
@@ -287,13 +287,13 @@ public class PlayerInput
                 string text = "";
                 string[] leapText = new[]
                 {
-                    "As you leaped through your enemy's legs, you successfully dodged the " + Encounters.nameEnemy +
+                    "As you leaped through your enemy's legs, you successfully dodged the " + EnemyStats.nameEnemy +
                     "'s attack!" +
                     "\nYou received " + nonDamageTaken + " damage!",
-                    "You take a deep breath, controlling your breathing and jump over the " + Encounters.nameEnemy +
+                    "You take a deep breath, controlling your breathing and jump over the " + EnemyStats.nameEnemy +
                     "" +
                     "\nyou received " + nonDamageTaken + " damage!",
-                    "You crouch quickly as the sword of the " + Encounters.nameEnemy + " almost hits you" +
+                    "You crouch quickly as the sword of the " + EnemyStats.nameEnemy + " almost hits you" +
                     "\nand successfully dodged it's attack! \nYou received " + nonDamageTaken + " damage!"
                 };
 

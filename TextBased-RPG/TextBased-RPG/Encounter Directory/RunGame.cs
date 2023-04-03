@@ -33,12 +33,12 @@ public class RunGame
         Console.Clear();
         
         //First encounter
-        Encounters.FirstEncounter();
+        Encounter.FirstEncounter();
         
         //Random Encounters, ENDLESS MODE
         while (mainLoop)
         {
-            Encounters.RandomEncounter();
+            Encounter.RandomEncounter();
         }
     }
 }

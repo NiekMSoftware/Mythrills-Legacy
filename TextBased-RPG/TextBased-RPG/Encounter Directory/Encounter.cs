@@ -2,31 +2,28 @@
 
 namespace RPG;
 
-public class Encounters
+public class Encounter
 {
+    #region Random and References
     private static Random rand = new Random();
     private static PlayerInput _playerInput = new PlayerInput();
-    
-    //Enemy stats
-    public static string nameEnemy = "";
-    public static int powerEnemy = 0;
-    public static int healthEnemy = 0;
-    public static int maxHealthEnemy;
-    
-    //Encounters
+    private static Player _player = new Player();
+    #endregion
+
+    #region Encounters
     public static void FirstEncounter()
     {
         Console.WriteLine("You encountered an enemy! - CONCEPT");
         Console.ReadKey();
-        Combat(false, "Human Rogue", 20,60);
+        Combat(false, "Human Rogue", 20,60, 69);
     }
 
-    public static void BasicFightEncounter()
+    private static void BasicFightEncounter()
     {
         Console.Clear();
         Console.WriteLine("You turn the corner and see another enemy..");
         Console.ReadKey();
-        Combat(true, "", 0,0);
+        Combat(true, "", 0,0,0);
     }
 
     //Encounter tools
@@ -40,58 +37,81 @@ public class Encounters
         }
     }
     
+    
+    #endregion
+
+    #region Combat & Misc
+    
     //-Make a combat system
-    public static void Combat(bool _randomEnemyPower, string _nameEnemy, int _powerEnemy, int _randomHealthEnemy)
+    public static void Combat(bool _randomEnemyPower, string _nameEnemy, int _powerEnemy, int _randomHealthEnemy, int _speedEnemy)
     {
         //Random enemy encounter
         if (_randomEnemyPower)
         {
-            nameEnemy = GetName();
-            powerEnemy = rand.Next(15,40);
-            healthEnemy = rand.Next(60, 120);
-            maxHealthEnemy = healthEnemy;
+            EnemyStats.nameEnemy = GetName();
+            EnemyStats.powerEnemy = rand.Next(15,40);
+            EnemyStats.speedEnemy = rand.Next(20, 40);
+            
+            EnemyStats.healthEnemy = rand.Next(60, 120);
+            EnemyStats.maxHealthEnemy = EnemyStats.healthEnemy;
         }
         else
         {
             //Static enemy encounters
-            nameEnemy = _nameEnemy;
-            powerEnemy = _powerEnemy;
-            healthEnemy = _randomHealthEnemy;
-            maxHealthEnemy = _randomHealthEnemy;
+            EnemyStats.nameEnemy = _nameEnemy;
+            EnemyStats.powerEnemy = _powerEnemy;
+            EnemyStats.speedEnemy = _speedEnemy;
+            
+            //Health
+            EnemyStats.healthEnemy = _randomHealthEnemy;
+            EnemyStats.maxHealthEnemy = _randomHealthEnemy;
         }
         
         //Make a reference to the Experience class
         GainExperience gainEXP = new GainExperience();
 
         //Make a loop using Health
-        while (healthEnemy > 0)
+        while (EnemyStats.healthEnemy > 0)
         {
             Console.Clear();
-            Console.WriteLine(nameEnemy);
-            Console.WriteLine("Power: " + powerEnemy + " / " + "Health: " + healthEnemy + " / " + maxHealthEnemy);
+            Console.WriteLine(EnemyStats.nameEnemy);
+            Console.WriteLine("Power: " + EnemyStats.powerEnemy + " / " + "Health: " + EnemyStats.healthEnemy + " / " + EnemyStats.maxHealthEnemy +
+                              "\nSpeed: " + EnemyStats.speedEnemy);
+            Console.WriteLine("╔════════════════════════════╗");
+            Console.WriteLine("║                            ║");
+            Console.WriteLine("║   A(ttack)     D(effend)   ║");
+            Console.WriteLine("║    R(un)        H(eal)     ║");
+            Console.WriteLine("║          L(eap)            ║");
+            Console.WriteLine("║                            ║");
+            Console.WriteLine("╚════════════════════════════╝");
+            Console.WriteLine("Potions: " + RunGame.currentPlayer.potions + "  Health: " + RunGame.currentPlayer.health + " / " 
+                              + RunGame.currentPlayer.maxHealth);
+            Console.WriteLine("Level: " + RunGame.currentPlayer.level + " EXP: " + RunGame.currentPlayer.exp + " / " 
+                              + RunGame.currentPlayer.maxExp);
+
+            if (_speedEnemy > _player.speed)
+            {
+                //Let the enemy attack first
+                Console.WriteLine("Rawr me angy");
+                
+                //Await what action the Player gives
+                _playerInput.Input();
+                
+                //Clear out the Console for repeat
+                Console.Clear();
+            }
+            else
+            {
+                //If the player is faster, let the player attack first!
+                _playerInput.Input();
+            }
             
-            Console.WriteLine("==============================");
-            Console.WriteLine("|                            |");
-            Console.WriteLine("|   A(ttack)     D(effend)   |");
-            Console.WriteLine("|    R(un)        H(eal)     |");
-            Console.WriteLine("|          L(eap)            |");
-            Console.WriteLine("|                            |");
-            Console.WriteLine("==============================");
-            Console.WriteLine(" Potions: " + RunGame.currentPlayer.potions + "  Health: " + RunGame.currentPlayer.health + " / " + RunGame.currentPlayer.maxHealth);
-            Console.WriteLine(" Level: " + RunGame.currentPlayer.level + " EXP: " + RunGame.currentPlayer.exp + " / " + RunGame.currentPlayer.maxExp);
-
-            /*
-             * Player Input
-             */
-           _playerInput.Input();
-
             if (RunGame.currentPlayer.health <= 0)
             {
                 //Player dies
-                Console.ReadKey();
                 Console.Clear();
-                Console.WriteLine("As the " + nameEnemy + " stands menacingly tall and comes down to strike. " +
-                                  "You have been slain by the almighty " + nameEnemy);
+                Console.WriteLine("As the " + EnemyStats.nameEnemy + " stands menacingly tall and comes down to strike. " +
+                                  "You have been slain by the almighty " + EnemyStats.nameEnemy);
                 Console.WriteLine("");
                 Console.WriteLine("Returning to Title Screen");
                 Console.ReadKey();
@@ -111,7 +131,7 @@ public class Encounters
         int c = rand.Next(10,50);
 
         Console.Clear();
-        Console.WriteLine("As you stand victorious won the battle against the " + nameEnemy + 
+        Console.WriteLine("As you stand victorious won the battle against the " + EnemyStats.nameEnemy + 
                           ", its body dissolves into " + c + " gold coins!");
         
         //Add the coins to our player
@@ -122,22 +142,22 @@ public class Encounters
          */
         int experiencePlayer = 0;
         
-        if (powerEnemy <= 20)
+        if (EnemyStats.powerEnemy <= 20)
         {
             //Randomize the exp gain
             experiencePlayer = rand.Next(5,16);
         }
-        else if (powerEnemy <= 30)
+        else if (EnemyStats.powerEnemy <= 30)
         {
             //Randomize the exp gain
             experiencePlayer = rand.Next(10,26);
         }
-        else if (powerEnemy <= 40)
+        else if (EnemyStats.powerEnemy <= 40)
         {
             //Randomize the exp gain
             experiencePlayer = rand.Next(27,56);
         }
-        else if (powerEnemy <= 50)
+        else if (EnemyStats.powerEnemy <= 50)
         {
             //Randomize the exp gain
             experiencePlayer = rand.Next(57, 105);
@@ -156,6 +176,9 @@ public class Encounters
         Console.WriteLine("Use this to level up various stats!");
         Console.ReadKey();
     }
+    #endregion
+
+    #region Resetting all Stats Upon Death
 
     public static void ResetPlayer()
     {
@@ -182,6 +205,11 @@ public class Encounters
         RunGame.currentPlayer.weaponValue = 15;
     }
     
+
+    #endregion
+
+    #region Random Name for Enemy
+
     public static string GetName()
     {
         switch (rand.Next(0, 4))
@@ -201,28 +229,7 @@ public class Encounters
         }
         return "Human Rogue";
     }
+    
 
-    public static void EnemyFunctions()
-    {
-        /*
-          * Give the AI an ability to Defend, Dodge, Counter or Heal
-        */
-
-        string input = Console.ReadLine();
-
-        //Defend
-        if (input.ToLower() == "a" || input.ToLower() == "A")
-        {
-            //Give the ability to Defend
-            
-            
-            //Give the ability to Dodge
-            
-            
-            //Give the ability to Counter
-            
-            
-            //Give the ability to Heal
-        }
-    }
+    #endregion
 }
