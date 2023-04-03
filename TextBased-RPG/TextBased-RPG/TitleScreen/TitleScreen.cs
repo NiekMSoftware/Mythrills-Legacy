@@ -27,8 +27,8 @@ and press ENTER to select an option
             "Play", "Options", "Credits", "Exit"
         };
         
-        MainMenu mainMenu = new MainMenu(title, options);
-        int selectedIndex = mainMenu.Run();
+        MenuNavigation menuNavigation = new MenuNavigation(title, options);
+        int selectedIndex = menuNavigation.Run();
 
         switch (selectedIndex)
         {

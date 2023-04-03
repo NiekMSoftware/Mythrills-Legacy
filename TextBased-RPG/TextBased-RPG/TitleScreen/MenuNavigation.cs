@@ -1,6 +1,6 @@
 ﻿namespace RPG;
 
-public class MainMenu
+public class MenuNavigation
 {
     /*
      * Make a skeleton for the Menu
@@ -10,7 +10,7 @@ public class MainMenu
     private string[] options;
     private string prompt;
     
-    public MainMenu(string _prompt, string[] _options)
+    public MenuNavigation(string _prompt, string[] _options)
     {
         prompt = _prompt;
         options = _options;

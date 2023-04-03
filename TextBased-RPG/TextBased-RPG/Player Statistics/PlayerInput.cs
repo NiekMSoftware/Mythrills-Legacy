@@ -1,26 +1,49 @@
-﻿namespace RPG;
+﻿using System.Collections.Specialized;
+
+namespace RPG;
 
 public class PlayerInput
 {
     private Encounters enemyEncounter = new Encounters();
     private static Random rand = new Random();
     
-    
+    /*
+     * Receive the Player's Input
+     */
     public void Input()
-    { 
-        //Save the input of the player
+    {
         string input = Console.ReadLine();
 
-        //Check what the input is and do that action accordingly
-        if (input.ToLower() == "a" || input.ToLower() == "attack")
+        switch (input.ToLower())
         {
-            /*
-             * Attack
-             */
+            case string a when a.Contains("a"):
+                Attack();
+                break;
+            case string d when d.Contains("d"):
+                Defend();
+                break;
+            case string r when r.Contains("r"):
+                Run();
+                break;
+            case string h when h.Contains("h"):
+                Heal();
+                break;
+            case string l when l.Contains("l"):
+                Leap();
+                break;
+            default:
+                NoInput();
+                break;
+        }
+    }
 
-            //Damage the player
-            int damageTaken = (Encounters.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(2,10);
-            
+    #region Player Actions
+    
+    private void Attack()
+    {
+         //Damage the player
+            int damageTaken = (Encounters.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(2, 10);
+
             if (damageTaken < 0)
                 damageTaken = 0;
 
@@ -30,7 +53,7 @@ public class PlayerInput
             /*
              * Make it so you're able to miss
              */
-            if (rand.Next(0,RunGame.currentPlayer.evasion) == 1)
+            if (rand.Next(0, RunGame.currentPlayer.evasion) == 1)
             {
                 Console.WriteLine("You missed!");
                 Console.WriteLine("You took " + damageTaken + " damage!");
@@ -38,10 +61,10 @@ public class PlayerInput
             else
             {
                 dealDamage = (RunGame.currentPlayer.weaponValue + RunGame.currentPlayer.damage) + rand.Next(0, 8);
-                
+
                 //Make an array with different texts when attacking
                 string text = "";
-                string[] attackText = new []
+                string[] attackText = new[]
                 {
                     $"With haste you surge forth, your sword flying through your hands!" +
                     $"\nAs you pass the {Encounters.nameEnemy} strikes you" +
@@ -58,35 +81,34 @@ public class PlayerInput
                     $"\nYou dealt {dealDamage} damage!" +
                     $"\nThe {Encounters.nameEnemy} managed to hit you as hard back dealing {damageTaken} damage!"
                 };
-            
+
                 //randomize attack texts
                 text = attackText[rand.Next(0, attackText.Length)];
-            
+
                 //Attack
                 Console.WriteLine(text);
             }
-            
+
             //Lower health
             RunGame.currentPlayer.health -= damageTaken;
             Encounters.healthEnemy -= dealDamage;
-        }
-        else if (input.ToLower() == "d" || input.ToLower() == "defend")
-        {
-            /*
-             * Defend
-             */
-            
-            //The power of the enemy will be lessened
+
+            Console.ReadLine();
+    }
+
+    private void Defend()
+    {
+          //The power of the enemy will be lessened
             int damageTaken = (Encounters.powerEnemy / 3) - RunGame.currentPlayer.armorValue;
             if (damageTaken < 0)
                 damageTaken = 0;
 
             //Make a random value so it will negate damage back to the enemy in our Defensive stance
             int dealDamage = rand.Next(2, RunGame.currentPlayer.weaponValue);
-            
+
             //Make a random value to gain health back
             int gainHealth = rand.Next(5, RunGame.currentPlayer.minHealthHealing);
-            
+
             //Make an array with different texts when defending
             string text = "";
             string[] defendText = new[]
@@ -105,7 +127,7 @@ public class PlayerInput
 
             //Randomize defend texts
             text = defendText[rand.Next(0, defendText.Length)];
-            
+
             //Make an array to defend and get health back from it
             string[] defendTextHealth = new[]
             {
@@ -114,13 +136,13 @@ public class PlayerInput
             };
 
             //Make it a chance to gain health back, 2% chance
-            if (rand.Next(1,51) == 1)
+            if (rand.Next(1, 51) == 1)
             {
                 //Gain health when successful
                 RunGame.currentPlayer.health += gainHealth;
 
                 Console.WriteLine(defendTextHealth[0]);
-                
+
                 //Return health back to the max when higher 
                 if (RunGame.currentPlayer.health >= RunGame.currentPlayer.maxHealth)
                 {
@@ -134,43 +156,40 @@ public class PlayerInput
                 RunGame.currentPlayer.health -= damageTaken;
                 Encounters.healthEnemy -= dealDamage;
             }
-        }
-        else if (input.ToLower() == "r" || input.ToLower() == "run")
-        {
-            /*
-             * Run
-             */
-            
-            //Make a random generated number for a chance to run away
-            if (rand.Next(0, 2) == 0)
-            {
-                //Calculate the amount of damage being taken
-                int damageTaken = Encounters.powerEnemy - RunGame.currentPlayer.armorValue;
-                if (damageTaken < 0)
-                    damageTaken = 0;
 
-                //Continue story
-                Console.WriteLine("As you sprint away from the " + Encounters.nameEnemy + 
-                                  ", its strike catches you in the back, sending you sprawling onto the ground");
-                Console.WriteLine("You lose " + damageTaken + " health and are unable to escape.");
-                Console.ReadLine();
-            }
-            else
-            {
-                Console.WriteLine("You ran away from the " + Encounters.nameEnemy + " successfully escaped!");
-                Console.ReadLine();
-                //go to store - CONCEPT
-            }
-            
-        }
-        else if (input.ToLower() == "h" || input.ToLower() == "heal")
-        {
-            /*
-             * Heal
-             */
+            Console.ReadLine();
+    }
 
-            int maxHealth = RunGame.currentPlayer.maxHealth;
-            
+    private void Run()
+    {
+        //Make a random generated number for a chance to run away
+        if (rand.Next(0, 2) == 0)
+        {
+            //Calculate the amount of damage being taken
+            int damageTaken = Encounters.powerEnemy - RunGame.currentPlayer.armorValue;
+            if (damageTaken < 0)
+                damageTaken = 0;
+
+            //Continue story
+            Console.WriteLine("As you sprint away from the " + Encounters.nameEnemy +
+                              ", its strike catches you in the back, sending you sprawling onto the ground");
+            Console.WriteLine("You lose " + damageTaken + " health and are unable to escape.");
+            Console.ReadLine();
+        }
+        else
+        {
+            Console.WriteLine("You ran away from the " + Encounters.nameEnemy + " successfully escaped!");
+            Console.ReadLine();
+            //go to store - CONCEPT
+        }
+
+        Console.ReadLine();
+    }
+
+    private void Heal()
+    {
+        int maxHealth = RunGame.currentPlayer.maxHealth;
+
             //Check how many potions our player has left
             if (RunGame.currentPlayer.potions == 0)
             {
@@ -189,28 +208,30 @@ public class PlayerInput
             {
                 //Declare how much a flask will heal
                 int _potionValue = RunGame.currentPlayer.potionValue;
-                
+
                 //Declare how much damage you will take
-                int damageTaken = ((Encounters.powerEnemy / 2) + rand.Next(0,5)) - RunGame.currentPlayer.armorValue;
+                int damageTaken = ((Encounters.powerEnemy / 2) + rand.Next(0, 5)) - RunGame.currentPlayer.armorValue;
                 if (damageTaken < 0)
                     damageTaken = 0;
 
                 //Note down how many potions the player has got left
                 RunGame.currentPlayer.potions--;
-                
+
                 //Reach max health and still use a flask
                 if ((RunGame.currentPlayer.health + _potionValue) > maxHealth)
                 {
                     RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
-                    Console.WriteLine("You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
+                    Console.WriteLine(
+                        "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
                     Console.WriteLine("You gain " + _potionValue + " health");
                 }
-                else if(RunGame.currentPlayer.health < maxHealth)
+                else if (RunGame.currentPlayer.health < maxHealth)
                 {
                     RunGame.currentPlayer.health += _potionValue;
-                    
+
                     //Continue the story
-                    Console.WriteLine("You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
+                    Console.WriteLine(
+                        "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
                     Console.WriteLine("You gain " + _potionValue + " health");
                 }
 
@@ -220,40 +241,44 @@ public class PlayerInput
                 Console.WriteLine("As you were occupied, the " + Encounters.nameEnemy + " advanced and struck.");
                 Console.WriteLine("You lose " + damageTaken + " health!");
                 RunGame.currentPlayer.health -= damageTaken;
+
+                //Continue
+                Console.ReadLine();
             }
-        }
-        else if (input.ToLower() == "l" || input.ToLower() == "leap")
-        {
-            /*
-             * Leap
-             */
-            
-            int nonDamageTaken = 0;
+    }
+
+    private void Leap()
+    {
+        int nonDamageTaken = 0;
 
             int damageTaken = (Encounters.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(8, 22);
 
             //Make the Leap rng, so there is a chance you will get hit
-            if (rand.Next(0,RunGame.currentPlayer.leap) == 0)
+            if (rand.Next(0, RunGame.currentPlayer.leap) == 0)
             {
                 string text = "";
                 string[] leapFailure = new[]
                 {
-                    "As you tried to leap through your enemy's legs, the " + Encounters.nameEnemy + " catches you while you leaped.." +
+                    "As you tried to leap through your enemy's legs, the " + Encounters.nameEnemy +
+                    " catches you while you leaped.." +
                     "\nThe " + Encounters.nameEnemy + " sliced you brutally and dealt " + damageTaken + " damage!",
-                    "You take a deep breath, controlling your breathing to getting ready to dodge the " + Encounters.nameEnemy + ", " +
-                    "\nunnoticed the " + Encounters.nameEnemy + " charges at you and pins you down with its sword through your chest..." +
-                    "\nThe " + Encounters.nameEnemy + " dealt " + damageTaken +  " damage!",
-                    "You quickly try to evade the " + Encounters.nameEnemy + 
+                    "You take a deep breath, controlling your breathing to getting ready to dodge the " +
+                    Encounters.nameEnemy + ", " +
+                    "\nunnoticed the " + Encounters.nameEnemy +
+                    " charges at you and pins you down with its sword through your chest..." +
+                    "\nThe " + Encounters.nameEnemy + " dealt " + damageTaken + " damage!",
+                    "You quickly try to evade the " + Encounters.nameEnemy +
                     " attack by crouching! Unfortunately, the " + Encounters.nameEnemy + " managed to hit" +
-                    "\nyou in the head with it's sword... \nThe " + Encounters.nameEnemy + " dealt " + damageTaken + " damage!" 
+                    "\nyou in the head with it's sword... \nThe " + Encounters.nameEnemy + " dealt " + damageTaken +
+                    " damage!"
                 };
 
                 //Randomize the text
                 text = leapFailure[rand.Next(0, leapFailure.Length)];
-                
+
                 //Display the text
                 Console.WriteLine(text);
-                
+
                 //Receive damage
                 RunGame.currentPlayer.health -= damageTaken;
             }
@@ -262,38 +287,28 @@ public class PlayerInput
                 string text = "";
                 string[] leapText = new[]
                 {
-                    "As you leaped through your enemy's legs, you successfully dodged the " + Encounters.nameEnemy + "'s attack!" +
+                    "As you leaped through your enemy's legs, you successfully dodged the " + Encounters.nameEnemy +
+                    "'s attack!" +
                     "\nYou received " + nonDamageTaken + " damage!",
-                    "You take a deep breath, controlling your breathing and jump over the " + Encounters.nameEnemy + "" +
+                    "You take a deep breath, controlling your breathing and jump over the " + Encounters.nameEnemy +
+                    "" +
                     "\nyou received " + nonDamageTaken + " damage!",
                     "You crouch quickly as the sword of the " + Encounters.nameEnemy + " almost hits you" +
                     "\nand successfully dodged it's attack! \nYou received " + nonDamageTaken + " damage!"
                 };
-                
+
                 text = leapText[rand.Next(0, leapText.Length)];
                 Console.WriteLine(text);
             }
-        }
-        if (RunGame.currentPlayer.health <= 0)
-        {
-            //Player dies
-            Console.ReadKey();
-            Console.Clear();
-            Console.WriteLine("As the " + Encounters.nameEnemy + " stands menacingly tall and comes down to strike. " +
-                              "You have been slain by the almighty " + Encounters.nameEnemy);
-            Console.WriteLine("");
-            Console.WriteLine("Returning to Title Screen");
-            Console.ReadKey();
 
-            /*
-             * Reset all the stats the player got
-             */
-            Encounters.ResetPlayer();
+            Console.ReadLine();
+    }
 
-            //Return to main Menu
-            Game titleScreen = new Game();
-            titleScreen.RunTitleScreen_();
-        }
-        Console.ReadLine();
-        }
+    private void NoInput()
+    {
+        Console.WriteLine("Please enter an Input..");
+        Console.ReadKey();
+    }
+    
+    #endregion
 }
