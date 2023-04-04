@@ -1,8 +1,7 @@
-#ignore the idea directory
-*.idea
-*/idea
-
-
 #ignore the build directory
 *.bin
 */bin
+
+#ignore the idea directory
+*.idea
+*/.idea
