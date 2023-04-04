@@ -1,0 +1,3 @@
+#ignore the idea directory
+*.idea
+*/idea
