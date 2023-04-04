@@ -1,6 +1,6 @@
 #ignore the idea directory
 *.idea
-/idea
+*/idea
 
 
 #ignore the build directory
