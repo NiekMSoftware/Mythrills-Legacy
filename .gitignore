@@ -1,2 +1,5 @@
 #ignore the idea folder
-/.idea/.idea.TextBased-RPG/.idea
+.idea/
+
+#ignore the build directory
+/dist
