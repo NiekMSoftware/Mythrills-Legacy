@@ -12,6 +12,16 @@ public class EnemyStats
     public static int healthEnemy = 0;
     public static int maxHealthEnemy;
     
+    //Health Regen
+    public static int regenHealth;
+    
+    //Armor
+    public static int armorEnemy = 5;
+    
     //Speed
     public static int speedEnemy = 0;
+    
+    //Enemy inventory
+    public static int potions = 2;
+    public static int potionValue;
 }

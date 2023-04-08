@@ -5,6 +5,7 @@ namespace RPG;
 public class PlayerInput
 {
     private static EnemyStats _enemy = new EnemyStats();
+    private static EnemyActions _eActions = new EnemyActions(); 
     private static Random rand = new Random();
 
     /*
@@ -41,22 +42,66 @@ public class PlayerInput
     
     private void Attack()
     {
-         //Damage the player
-            int damageTaken = (EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(2, 10);
+        //Make a random value so it will add more damage to our Weapon (so critical hit)
+        int dealDamage = 0;
 
-            if (damageTaken < 0)
-                damageTaken = 0;
+        if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
+        {
+           _eActions.RunCombat();
+           Console.ReadLine();
 
-            //Make a random value so it will add more damage to our Weapon (so critical hit)
-            int dealDamage = 0;
+           //Check if the enemy is Defending during it's turn
+           if (EnemyActions.isDefending)
+           {
+               EnemyInteraction.EnemyDefend();
+           }
+           else if (EnemyActions.isHealing) //Check if the enemy is healing
+           {
+               Console.WriteLine("He do be healin' tho");
+           }
+           else //If it is false, run the combat
+           {
+               /*
+     * Make it so you're able to miss
+     */
+               if (rand.Next(0, RunGame.currentPlayer.evasion) == 0)
+               {
+                   Console.WriteLine("You missed!");
+               }
+               else
+               {
+                   dealDamage = (RunGame.currentPlayer.weaponValue + RunGame.currentPlayer.damage) + rand.Next(0, 8);
 
+                   //Make an array with different texts when attacking
+                   string text = "";
+                   string[] attackText = new[]
+                   {
+                       $"With haste you surge forth, your sword flying through your hands!" +
+                       $"\nYou dealt {dealDamage} damage!" +
+                       $"You run towards the {EnemyStats.nameEnemy} with your blade in two hands, you strike! " +
+                       $"\nYou managed to deal {dealDamage} to the {EnemyStats.nameEnemy}!", 
+                       $"You quickly try to evade the {EnemyStats.nameEnemy} and strike its legs dealing {dealDamage} damage!",
+                       $"With anger and yet a lot of fear, your sword trembling but heroic in your hands!" +
+                       $"\nYou charge at the {EnemyStats.nameEnemy} piercing your sword through the {EnemyStats.nameEnemy}'s chest!" +
+                       $"\nYou dealt {dealDamage} damage!"
+                   };
+
+                   //randomize attack texts
+                   text = attackText[rand.Next(0, attackText.Length)];
+
+                   //Attack
+                   Console.WriteLine(text);
+               }
+           }
+        }
+        else
+        {
             /*
-             * Make it so you're able to miss
-             */
+       * Make it so you're able to miss
+       */
             if (rand.Next(0, RunGame.currentPlayer.evasion) == 1)
             {
                 Console.WriteLine("You missed!");
-                Console.WriteLine("You took " + damageTaken + " damage!");
             }
             else
             {
@@ -67,19 +112,13 @@ public class PlayerInput
                 string[] attackText = new[]
                 {
                     $"With haste you surge forth, your sword flying through your hands!" +
-                    $"\nAs you pass the {EnemyStats.nameEnemy} strikes you" +
                     $"\nYou dealt {dealDamage} damage!" +
-                    $"\nYou received {damageTaken} damage!",
                     $"You run towards the {EnemyStats.nameEnemy} with your blade in two hands, you strike! " +
-                    $"\nYou managed to deal {dealDamage} to the {EnemyStats.nameEnemy}!" +
-                    $"\nThe {EnemyStats.nameEnemy} managed to stab you ever so slightly and dealt {damageTaken} damage!",
-                    $"You quickly try to evade the {EnemyStats.nameEnemy} and strike its legs dealing {dealDamage} damage!" +
-                    $"\nUnfortunately, the {EnemyStats.nameEnemy} managed to throw it's weapon in your stomach..." +
-                    $"\nThe {EnemyStats.nameEnemy} dealt {damageTaken} damage!",
+                    $"\nYou managed to deal {dealDamage} to the {EnemyStats.nameEnemy}!", 
+                    $"You quickly try to evade the {EnemyStats.nameEnemy} and strike its legs dealing {dealDamage} damage!",
                     $"With anger and yet a lot of fear, your sword trembling but heroic in your hands!" +
                     $"\nYou charge at the {EnemyStats.nameEnemy} piercing your sword through the {EnemyStats.nameEnemy}'s chest!" +
-                    $"\nYou dealt {dealDamage} damage!" +
-                    $"\nThe {EnemyStats.nameEnemy} managed to hit you as hard back dealing {damageTaken} damage!"
+                    $"\nYou dealt {dealDamage} damage!"
                 };
 
                 //randomize attack texts
@@ -87,13 +126,16 @@ public class PlayerInput
 
                 //Attack
                 Console.WriteLine(text);
+                Console.ReadLine();
+                
+                _eActions.EnemyCombat();
             }
+        }
 
-            //Lower health
-            RunGame.currentPlayer.health -= damageTaken;
-            EnemyStats.healthEnemy -= dealDamage;
+        //Lower the health of the Enemy    
+        EnemyStats.healthEnemy -= dealDamage;
 
-            Console.ReadLine();
+        Console.ReadLine();
     }
 
     private void Defend()

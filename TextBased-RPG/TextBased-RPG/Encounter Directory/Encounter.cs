@@ -76,24 +76,21 @@ public class Encounter
             Console.Clear();
             Console.WriteLine(EnemyStats.nameEnemy);
             Console.WriteLine("Power: " + EnemyStats.powerEnemy + " | " + "Health: " + EnemyStats.healthEnemy + " / " + EnemyStats.maxHealthEnemy +
-                              "\nSpeed: " + EnemyStats.speedEnemy);
-            Console.WriteLine($"╔════════════════════════════╗");
-            Console.WriteLine($"║   A(ttack)     D(efend)    ║");
-            Console.WriteLine($"║    R(un)        H(eal)     ║");
-            Console.WriteLine($"║          L(eap)            ║");
-            Console.WriteLine($"╠════════════════════════════╣");
-            Console.WriteLine($"║You:                        ║");
-            Console.WriteLine($"║Potions: "+ RunGame.currentPlayer.potions + " Health: "
-                              + RunGame.currentPlayer.health + " / " + RunGame.currentPlayer.maxHealth +"║");
-            Console.WriteLine($"║Level: " + RunGame.currentPlayer.level + " EXP: " + RunGame.currentPlayer.exp +" / " 
-                              + RunGame.currentPlayer.maxExp + "        ║");
-            Console.WriteLine($"╚════════════════════════════╝");
+                              "\nSpeed: " + EnemyStats.speedEnemy + " | " + EnemyStats.potions + " potions");
+            Console.WriteLine($"|=============================|");
+            Console.WriteLine($"|   A(ttack)     D(efend)     |");
+            Console.WriteLine($"|    R(un)        H(eal)      |");
+            Console.WriteLine($"|          L(eap)             |");
+            Console.WriteLine($"|=============================|");
+            Console.WriteLine("");
+            Console.WriteLine($"You:                         ");
+            Console.WriteLine($"Potions: "+ RunGame.currentPlayer.potions + " Health: "
+                              + RunGame.currentPlayer.health + " / " + RunGame.currentPlayer.maxHealth);
+            Console.WriteLine($"Level: " + RunGame.currentPlayer.level + " | EXP: " + RunGame.currentPlayer.exp + " / "
+                              + RunGame.currentPlayer.maxExp);
 
             if (_speedEnemy > _player.speed)
             {
-                //Let the enemy attack first
-                Console.WriteLine("Rawr me angy");
-                
                 //Await what action the Player gives
                 _playerInput.Input();
                 
@@ -133,6 +130,7 @@ public class Encounter
         Console.Clear();
         Console.WriteLine("As you stand victorious won the battle against the " + EnemyStats.nameEnemy + 
                           ", its body dissolves into " + c + " gold coins!");
+        Console.ReadLine();
         
         //Add the coins to our player
         RunGame.currentPlayer.coins += c;

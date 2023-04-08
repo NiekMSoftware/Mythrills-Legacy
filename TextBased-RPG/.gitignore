@@ -5,3 +5,13 @@
 #ignore the idea directory
 *.idea
 */.idea
+
+#ignore the obj directory
+*.obj
+*/obj
+
+#ignore the sln file
+*.sln
+
+#ignore the csproj file
+*.csproj
