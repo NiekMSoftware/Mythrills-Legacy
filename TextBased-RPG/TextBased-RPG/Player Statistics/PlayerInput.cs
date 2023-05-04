@@ -17,19 +17,19 @@ public class PlayerInput
 
         switch (input.ToLower())
         {
-            case string a when a.Contains("a"):
+            case string a when a == "a":
                 Attack();
                 break;
-            case string d when d.Contains("d"):
+            case string d when d == "d":
                 Defend();
                 break;
-            case string r when r.Contains("r"):
+            case string r when r == "r":
                 Run();
                 break;
-            case string h when h.Contains("h"):
+            case string h when h == "h":
                 Heal();
                 break;
-            case string l when l.Contains("l"):
+            case string l when l == "l":
                 Leap();
                 break;
             default:
@@ -47,17 +47,20 @@ public class PlayerInput
 
         if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
         {
+            //Run combat
            _eActions.RunCombat();
-           Console.ReadLine();
 
-           //Check if the enemy is Defending during it's turn
+           /*
+            * Check if the enemy is Defending during it's turn
+            */
+           //TODO: Review the action here everytime I work on the project
            if (EnemyActions.isDefending)
            {
-               EnemyInteraction.EnemyDefend();
+               EnemyInteraction.EnemyDefending();
            }
            else if (EnemyActions.isHealing) //Check if the enemy is healing
            {
-               Console.WriteLine("He do be healin' tho");
+               EnemyInteraction.EnemyHealing();
            }
            else //If it is false, run the combat
            {

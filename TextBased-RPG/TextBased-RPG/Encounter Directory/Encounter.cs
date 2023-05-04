@@ -36,8 +36,7 @@ public class Encounter
                 break;
         }
     }
-    
-    
+
     #endregion
 
     #region Combat & Misc

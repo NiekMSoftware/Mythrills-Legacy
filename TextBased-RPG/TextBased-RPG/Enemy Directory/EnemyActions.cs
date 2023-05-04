@@ -111,32 +111,8 @@ public class EnemyActions
 
     private void Defend()
     {
-        //Randomize the strength of how much the Health gets regained
-        EnemyStats.regenHealth = rand.Next(5, 10);
-        int amountOfHealthRegained = EnemyStats.regenHealth;
-        
-        //The chance of it happening
-        int chanceOfRegen = rand.Next(0, 4);
         if (isDefending)
-        {
-            //Make it a 25% chance for him to regain health when defending
-            if (chanceOfRegen == 0)
-            {
-                Console.WriteLine("Me defend and gain health back heh");
-                EnemyStats.healthEnemy += amountOfHealthRegained;
-                Console.WriteLine("They gained back " + amountOfHealthRegained + " health");
-                
-                //Dont override the amount of health
-                if (EnemyStats.healthEnemy >= EnemyStats.maxHealthEnemy)
-                {
-                    EnemyStats.healthEnemy = EnemyStats.maxHealthEnemy;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Me defend, please dont hurt me");
-            }
-        }
+            EnemyInteraction.EnemyDefending();
     }
 
     private void Heal()
