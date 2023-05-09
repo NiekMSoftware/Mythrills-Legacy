@@ -8,6 +8,9 @@ public class PlayerInput
     private static EnemyActions _eActions = new EnemyActions(); 
     private static Random rand = new Random();
 
+    //TODO: Check if the player is healing, and when they are let the AI heal too
+    
+    
     /*
      * Receive the Player's Input
      */
@@ -37,7 +40,7 @@ public class PlayerInput
                 break;
         }
     }
-
+    
     #region Player Actions
     
     private void Attack()
@@ -45,164 +48,104 @@ public class PlayerInput
         //Make a random value so it will add more damage to our Weapon (so critical hit)
         int dealDamage = 0;
 
+        dealDamage = RunGame.currentPlayer.weaponValue + rand.Next(6, 14);
+
         if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
         {
-            //Run combat
-           _eActions.RunCombat();
-
-           /*
-            * Check if the enemy is Defending during it's turn
-            */
-           //TODO: Review the action here everytime I work on the project
-           if (EnemyActions.isDefending)
-           {
-               EnemyInteraction.EnemyDefending();
-           }
-           else if (EnemyActions.isHealing) //Check if the enemy is healing
-           {
-               EnemyInteraction.EnemyHealing();
-           }
-           else //If it is false, run the combat
-           {
-               /*
-     * Make it so you're able to miss
-     */
-               if (rand.Next(0, RunGame.currentPlayer.evasion) == 0)
-               {
-                   Console.WriteLine("You missed!");
-               }
-               else
-               {
-                   dealDamage = (RunGame.currentPlayer.weaponValue + RunGame.currentPlayer.damage) + rand.Next(0, 8);
-
-                   //Make an array with different texts when attacking
-                   string text = "";
-                   string[] attackText = new[]
-                   {
-                       $"With haste you surge forth, your sword flying through your hands!" +
-                       $"\nYou dealt {dealDamage} damage!" +
-                       $"You run towards the {EnemyStats.nameEnemy} with your blade in two hands, you strike! " +
-                       $"\nYou managed to deal {dealDamage} to the {EnemyStats.nameEnemy}!", 
-                       $"You quickly try to evade the {EnemyStats.nameEnemy} and strike its legs dealing {dealDamage} damage!",
-                       $"With anger and yet a lot of fear, your sword trembling but heroic in your hands!" +
-                       $"\nYou charge at the {EnemyStats.nameEnemy} piercing your sword through the {EnemyStats.nameEnemy}'s chest!" +
-                       $"\nYou dealt {dealDamage} damage!"
-                   };
-
-                   //randomize attack texts
-                   text = attackText[rand.Next(0, attackText.Length)];
-
-                   //Attack
-                   Console.WriteLine(text);
-               }
-           }
-        }
-        else
-        {
-            /*
-       * Make it so you're able to miss
-       */
-            if (rand.Next(0, RunGame.currentPlayer.evasion) == 1)
+            EnemyCombatChoise.EnemyChoice_SpeedHigh();
+            if (EnemyActions.isDefending)
+                //Run the Class that checks what the player chance is
+                PlayerActions.EnemyIsDefending();
+            else if (EnemyActions.isHealing)
             {
-                Console.WriteLine("You missed!");
-            }
-            else
-            {
-                dealDamage = (RunGame.currentPlayer.weaponValue + RunGame.currentPlayer.damage) + rand.Next(0, 8);
-
-                //Make an array with different texts when attacking
-                string text = "";
-                string[] attackText = new[]
+                //Make it a 20% chance you attack the Enemy when they heal
+                switch (rand.Next(0,5))
                 {
-                    $"With haste you surge forth, your sword flying through your hands!" +
-                    $"\nYou dealt {dealDamage} damage!" +
-                    $"You run towards the {EnemyStats.nameEnemy} with your blade in two hands, you strike! " +
-                    $"\nYou managed to deal {dealDamage} to the {EnemyStats.nameEnemy}!", 
-                    $"You quickly try to evade the {EnemyStats.nameEnemy} and strike its legs dealing {dealDamage} damage!",
-                    $"With anger and yet a lot of fear, your sword trembling but heroic in your hands!" +
-                    $"\nYou charge at the {EnemyStats.nameEnemy} piercing your sword through the {EnemyStats.nameEnemy}'s chest!" +
-                    $"\nYou dealt {dealDamage} damage!"
-                };
-
-                //randomize attack texts
-                text = attackText[rand.Next(0, attackText.Length)];
-
-                //Attack
-                Console.WriteLine(text);
-                Console.ReadLine();
-                
-                _eActions.EnemyCombat();
+                    case 0:
+                        PlayerActions.EnemyHeals();
+                        break;
+                    default:
+                        PlayerActions.AttackWhenHeal();
+                        break;
+                }
             }
         }
+        else if (RunGame.currentPlayer.speed > EnemyStats.speedEnemy)
+        {
+            Console.WriteLine($"I attack and dealt {dealDamage}");
+            EnemyCombatChoise.EnemyChoice_SpeedLow();
+            
+            //Lower the health of the Enemy    
+            EnemyStats.healthEnemy -= dealDamage;
+        }
 
-        //Lower the health of the Enemy    
-        EnemyStats.healthEnemy -= dealDamage;
+        
 
         Console.ReadLine();
     }
 
     private void Defend()
     {
-          //The power of the enemy will be lessened
-            int damageTaken = (EnemyStats.powerEnemy / 3) - RunGame.currentPlayer.armorValue;
-            if (damageTaken < 0)
-                damageTaken = 0;
+        //The power of the enemy will be lessened
+        int damageTaken = (EnemyStats.powerEnemy / 3) - RunGame.currentPlayer.armorValue;
+        if (damageTaken < 0)
+            damageTaken = 0;
 
-            //Make a random value so it will negate damage back to the enemy in our Defensive stance
-            int dealDamage = rand.Next(2, RunGame.currentPlayer.weaponValue);
+        //Make a random value so it will negate damage back to the enemy in our Defensive stance
+        int dealDamage = rand.Next(2, RunGame.currentPlayer.weaponValue);
 
-            //Make a random value to gain health back
-            int gainHealth = rand.Next(5, RunGame.currentPlayer.minHealthHealing);
+        //Make a random value to gain health back
+        int gainHealth = rand.Next(5, RunGame.currentPlayer.minHealthHealing);
 
-            //Make an array with different texts when defending
-            string text = "";
-            string[] defendText = new[]
+        //Make an array with different texts when defending
+        string text = "";
+        string[] defendText = new[]
+        {
+            $"As the {EnemyStats.nameEnemy} prepares to strike you down, you ready your sword in a defensive stance." +
+            $"\nYou lose {damageTaken} health and dealt {dealDamage} damage!",
+            $"The {EnemyStats.nameEnemy} charges at you ever so magnificent, you hold your sword with both hands in a" +
+            $" effective yet majestic stance. " +
+            $"\nYou lost {damageTaken} health, but managed to deal {dealDamage} damage with a marvelous swing!",
+            $"As the {EnemyStats.nameEnemy} charges at you rapidly, you ready yourself from impact." +
+            $"\nWith courage you release a sigh and cough up blood from the impact," +
+            $"\nyou lost {damageTaken} health..." +
+            $"\nthe {EnemyStats.nameEnemy} looks afraid, as the wound you inflicted was more than it could endure!" +
+            $"\nYou dealt {dealDamage} damage..."
+        };
+
+        //Randomize defend texts
+        text = defendText[rand.Next(0, defendText.Length)];
+
+        //Make an array to defend and get health back from it
+        string[] defendTextHealth = new[]
+        {
+            $"As you successfully defend yourself against the {EnemyStats.nameEnemy}," +
+            $"\nyou managed to steal it's life and use it gain {gainHealth} health!"
+        };
+
+        //Make it a chance to gain health back, 2% chance
+        if (rand.Next(1, 51) == 1)
+        {
+            //Gain health when successful
+            RunGame.currentPlayer.health += gainHealth;
+
+            Console.WriteLine(defendTextHealth[0]);
+
+            //Return health back to the max when higher 
+            if (RunGame.currentPlayer.health >= RunGame.currentPlayer.maxHealth)
             {
-                $"As the {EnemyStats.nameEnemy} prepares to strike you down, you ready your sword in a defensive stance." +
-                $"\nYou lose {damageTaken} health and dealt {dealDamage} damage!",
-                $"The {EnemyStats.nameEnemy} charges at you ever so magnificent, you hold your sword with both hands in a" +
-                $" effective yet majestic stance. " +
-                $"\nYou lost {damageTaken} health, but managed to deal {dealDamage} damage with a marvelous swing!",
-                $"As the {EnemyStats.nameEnemy} charges at you rapidly, you ready yourself from impact." +
-                $"\nWith courage you release a sigh and cough up blood from the impact," +
-                $"\nyou lost {damageTaken} health..." +
-                $"\nthe {EnemyStats.nameEnemy} looks afraid, as the wound you inflicted was more than it could endure!" +
-                $"\nYou dealt {dealDamage} damage..."
-            };
-
-            //Randomize defend texts
-            text = defendText[rand.Next(0, defendText.Length)];
-
-            //Make an array to defend and get health back from it
-            string[] defendTextHealth = new[]
-            {
-                $"As you successfully defend yourself against the {EnemyStats.nameEnemy}," +
-                $"\nyou managed to steal it's life and use it gain {gainHealth} health!"
-            };
-
-            //Make it a chance to gain health back, 2% chance
-            if (rand.Next(1, 51) == 1)
-            {
-                //Gain health when successful
-                RunGame.currentPlayer.health += gainHealth;
-
-                Console.WriteLine(defendTextHealth[0]);
-
-                //Return health back to the max when higher 
-                if (RunGame.currentPlayer.health >= RunGame.currentPlayer.maxHealth)
-                {
-                    RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
-                }
+                RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
             }
-            else
-            {
-                Console.WriteLine(text);
-                //Lower health
-                RunGame.currentPlayer.health -= damageTaken;
-                EnemyStats.healthEnemy -= dealDamage;
-            }
+        }
+        else
+        {
+            Console.WriteLine(text);
+            //Lower health
+            RunGame.currentPlayer.health -= damageTaken;
+            EnemyStats.healthEnemy -= dealDamage;
+        }
 
-            Console.ReadLine();
+        Console.ReadLine();
     }
 
     private void Run()

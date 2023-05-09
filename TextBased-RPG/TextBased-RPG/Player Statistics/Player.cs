@@ -26,7 +26,7 @@ public class Player
     public int maxExp = 10;
     
     //Evade
-    public int evasion = 20;
+    public int evasion = 70;
     
     //Leaping
     public int leap = 10;

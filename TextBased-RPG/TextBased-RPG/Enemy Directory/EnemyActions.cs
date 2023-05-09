@@ -13,84 +13,44 @@ public class EnemyActions
     private Player _player = new Player();
     
     //Global Variables
-    private Random rand = new Random();
+    private static Random rand = new Random();
     
     //Bool to check if the AI defended
     public static bool isDefending = false;
+
+    public static bool isDefendingSlow = false;
     
     //Bool to detect if the enemy healed
     public static bool isHealing = false;
 
-    public void RunCombat()
+    public static void RunCombat()
     {
         EnemyCombat();
     }
-    public void EnemyCombat()
+    public static void EnemyCombat()
     {
-        if (EnemyStats.speedEnemy > _player.speed)
+        if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
         {
-            if (EnemyStats.healthEnemy <= EnemyStats.maxHealthEnemy / rand.Next(2,6))
-            {
-                if (EnemyStats.potions <= 0)
-                {
-                    switch (rand.Next(0,2))
-                    {
-                        case 0:
-                            Console.WriteLine("Me cant heal :(");
-                            break;
-                        case 1:
-                            Defend();
-                            break;
-                    }
-                }
-                else
-                {
-                    isHealing = true;
-                    Heal();
-                }
-            }
-            else
-            {
-                isHealing = false;
-                switch (rand.Next(0,2))
-                {
-                    case 0:
-                        isDefending = false;
-                        Attack();
-                        break;
-                    case 1:
-                        isDefending = true;
-                        Defend();
-                        break;
-                }
-            }
+            EnemyCombatChoise.EnemyChoice_SpeedHigh();
         }
-        else
+        else //if slower then run this
         {
-            switch (rand.Next(0,2))
-            {
-                case 0:
-                    Attack();
-                    break;
-                case 1:
-                    Heal();
-                    break;
-            }
+            EnemyCombatChoise.EnemyChoice_SpeedLow();
         }
     }
 
     #region Enemy Combat Region
 
     
-    private void Attack()
+    public static void Attack()
     {
         int dealDamage;
         int bonusDamage;
 
         bool hitCritical = false;
         
-        //Give the AI a 25% chance to Critical Hit
-        if (rand.Next(0, 4) == 0)
+        //Give the AI a 5% chance to Critical Hit
+        if (rand.Next(0, 20) == 0)
         {
             bonusDamage = EnemyStats.powerEnemy + rand.Next(3, 12);
         
@@ -108,17 +68,11 @@ public class EnemyActions
             RunGame.currentPlayer.health -= dealDamage;
         }
     }
-
-    private void Defend()
-    {
-        if (isDefending)
-            EnemyInteraction.EnemyDefending();
-    }
-
-    private void Heal()
+    
+    public static void Heal()
     {
         if (EnemyStats.potions <= 0)
-            EnemyStats.potions = 0;
+                EnemyStats.potions = 0;
 
         EnemyStats.potionValue = rand.Next(30, 40);
 
@@ -147,7 +101,23 @@ public class EnemyActions
             EnemyStats.potions--;
         }
     }
+    private static void Defend()
+    {
+        isDefending = true;
+        Console.WriteLine("Successfully defended");
+    }
     
+    public static void DefendSlowSpeed()
+    {
+        Console.WriteLine("Successfully defended whilst being slower");
+        Console.ReadLine();
+    }
+
+    public static void DefendHighSpeed()
+    {
+        isDefending = true;
+        Console.WriteLine("Successfully defended");
+    }
     
     #endregion
 }
