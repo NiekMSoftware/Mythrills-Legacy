@@ -47,7 +47,6 @@ public class PlayerInput
     #region Player Actions
     private void Attack()
     {
-        //test
         isAttacking = true;
         
         //Make a random value so it will add more damage to our Weapon (so critical hit)
