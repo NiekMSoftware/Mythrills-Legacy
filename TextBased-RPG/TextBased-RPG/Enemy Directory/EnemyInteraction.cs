@@ -6,6 +6,8 @@ public class EnemyInteraction
 
     public static bool failed;
     public static bool succeed;
+
+    public static bool enemyHealsToo;
     
     //Gather the name of the enemy
     private static string nameEnemy = EnemyStats.nameEnemy;

@@ -8,6 +8,9 @@ public class PlayerInput
     private static EnemyActions _eActions = new EnemyActions(); 
     private static Random rand = new Random();
 
+    public static bool isAttacking;
+    public static bool isHealing;
+
     //TODO: Check if the player is healing, and when they are let the AI heal too
     
     
@@ -45,29 +48,31 @@ public class PlayerInput
     
     private void Attack()
     {
+        isAttacking = true;
+        
         //Make a random value so it will add more damage to our Weapon (so critical hit)
         int dealDamage = 0;
 
         dealDamage = RunGame.currentPlayer.weaponValue + rand.Next(6, 14);
-
+        
         if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
         {
             EnemyCombatChoise.EnemyChoice_SpeedHigh();
             if (EnemyActions.isDefending)
+            {
+                isAttacking = false;
                 //Run the Class that checks what the player chance is
                 PlayerActions.EnemyIsDefending();
+            }
             else if (EnemyActions.isHealing)
             {
-                //Make it a 20% chance you attack the Enemy when they heal
-                switch (rand.Next(0,5))
-                {
-                    case 0:
-                        PlayerActions.EnemyHeals();
-                        break;
-                    default:
-                        PlayerActions.AttackWhenHeal();
-                        break;
-                }
+                isAttacking = false;
+                PlayerActions.HealOrAttack();
+            }
+            else if (isAttacking = true)
+            {
+                Console.WriteLine($"Me dealt {dealDamage} damage");
+                EnemyStats.healthEnemy -= EnemyStats.maxHealthEnemy - dealDamage;
             }
         }
         else if (RunGame.currentPlayer.speed > EnemyStats.speedEnemy)
@@ -78,9 +83,7 @@ public class PlayerInput
             //Lower the health of the Enemy    
             EnemyStats.healthEnemy -= dealDamage;
         }
-
         
-
         Console.ReadLine();
     }
 

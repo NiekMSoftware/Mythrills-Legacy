@@ -53,6 +53,7 @@ public class EnemyCombatChoise
     {
         if (EnemyStats.healthEnemy <= EnemyStats.maxHealthEnemy / 2)
         {
+            PlayerInput.isAttacking = false;
             EnemyActions.Heal();
         }
         else

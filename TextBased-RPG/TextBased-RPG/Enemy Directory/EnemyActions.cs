@@ -67,39 +67,13 @@ public class EnemyActions
             Console.WriteLine("The enemy hit you for " + dealDamage);
             RunGame.currentPlayer.health -= dealDamage;
         }
+
+        PlayerInput.isAttacking = true;
     }
     
     public static void Heal()
     {
-        if (EnemyStats.potions <= 0)
-                EnemyStats.potions = 0;
-
-        EnemyStats.potionValue = rand.Next(30, 40);
-
-        if (EnemyStats.potions <= 0)
-        {
-            switch (rand.Next(0,1))
-            {
-                case 0:
-                    Attack();
-                    break;
-                case 1:
-                    Defend();
-                    break;
-            }
-        }
-        else
-        {
-            Console.WriteLine("Hehe too bad, me Heal now");
-            EnemyStats.healthEnemy += EnemyStats.potionValue;
-            Console.WriteLine("They gained " + EnemyStats.potionValue + " health");
-
-            if (EnemyStats.healthEnemy >= EnemyStats.maxHealthEnemy)
-            {
-                EnemyStats.healthEnemy = EnemyStats.maxHealthEnemy;
-            }
-            EnemyStats.potions--;
-        }
+        
     }
     private static void Defend()
     {
@@ -109,14 +83,18 @@ public class EnemyActions
     
     public static void DefendSlowSpeed()
     {
+        isDefending = true;
         Console.WriteLine("Successfully defended whilst being slower");
         Console.ReadLine();
+        PlayerInput.isAttacking = true;
     }
 
     public static void DefendHighSpeed()
     {
         isDefending = true;
         Console.WriteLine("Successfully defended");
+        PlayerInput.isAttacking = true;
+
     }
     
     #endregion
