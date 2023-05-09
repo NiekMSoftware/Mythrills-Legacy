@@ -45,7 +45,6 @@ public class PlayerInput
     }
     
     #region Player Actions
-    //TODO: Check if the AI can be faster and add that to the healing section XD
     private void Attack()
     {
         isAttacking = true;
