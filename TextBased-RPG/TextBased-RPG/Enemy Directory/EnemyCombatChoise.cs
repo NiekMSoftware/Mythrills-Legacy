@@ -31,21 +31,13 @@ public class EnemyCombatChoise
                     EnemyActions.RunCombat();
                     break;
                 case 1:
-                    EnemyActions.DefendSlowSpeed();
+                    EnemyActions.Heal();
                     break;
             }
         }
         else
         {
-            switch (rand.Next(0,2))
-            {
-                case 0:
-                    EnemyActions.RunCombat();
-                    break;
-                case 1:
-                    EnemyActions.DefendSlowSpeed();
-                    break;
-            }
+            EnemyActions.RunCombat();
         }
     }
 

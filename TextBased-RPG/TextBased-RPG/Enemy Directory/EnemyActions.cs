@@ -73,7 +73,7 @@ public class EnemyActions
     
     public static void Heal()
     {
-        
+        Console.WriteLine("Me heal");
     }
     private static void Defend()
     {

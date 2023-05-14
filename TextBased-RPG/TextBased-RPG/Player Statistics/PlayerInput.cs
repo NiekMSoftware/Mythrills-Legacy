@@ -12,8 +12,7 @@ public class PlayerInput
     public static bool isHealing;
 
     //TODO: Check if the player is healing, and when they are let the AI heal too
-    
-    
+
     /*
      * Receive the Player's Input
      */
@@ -52,7 +51,7 @@ public class PlayerInput
         //Make a random value so it will add more damage to our Weapon (so critical hit)
         int dealDamage = 0;
 
-        dealDamage = RunGame.currentPlayer.weaponValue + rand.Next(6, 14);
+        dealDamage = RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue;
         
         if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
         {
@@ -77,7 +76,7 @@ public class PlayerInput
         else if (RunGame.currentPlayer.speed > EnemyStats.speedEnemy)
         {
             Console.WriteLine($"I attack and dealt {dealDamage}");
-            EnemyCombatChoise.EnemyChoice_SpeedLow();
+            EnemyActions.Attack();
             
             //Lower the health of the Enemy    
             EnemyStats.healthEnemy -= dealDamage;
@@ -180,61 +179,61 @@ public class PlayerInput
     {
         int maxHealth = RunGame.currentPlayer.maxHealth;
 
-            //Check how many potions our player has left
-            if (RunGame.currentPlayer.potions == 0)
+        //Check how many potions our player has left
+        if (RunGame.currentPlayer.potions == 0)
+        {
+            //Calculate how much health we will lose upon no flasks
+            int damageTaken = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
+            if (damageTaken < 0)
+                damageTaken = 0;
+
+            //Fail to heal
+            Console.WriteLine("As you desperately grasp for a potion in your pouch, " +
+                              "all that you feel are empty glass flasks");
+            Console.WriteLine("The " + EnemyStats.nameEnemy + " strikes you with a mighty blow and you lose "
+                              + damageTaken + " health!");
+        }
+        else
+        {
+            //Declare how much a flask will heal
+            int _potionValue = RunGame.currentPlayer.potionValue;
+
+            //Declare how much damage you will take
+            int damageTaken = ((EnemyStats.powerEnemy / 2) + rand.Next(0, 5)) - RunGame.currentPlayer.armorValue;
+            if (damageTaken < 0)
+                damageTaken = 0;
+
+            //Note down how many potions the player has got left
+            RunGame.currentPlayer.potions--;
+
+            //Reach max health and still use a flask
+            if ((RunGame.currentPlayer.health + _potionValue) > maxHealth)
             {
-                //Calculate how much health we will lose upon no flasks
-                int damageTaken = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
-                if (damageTaken < 0)
-                    damageTaken = 0;
-
-                //Fail to heal
-                Console.WriteLine("As you desperately grasp for a potion in your pouch, " +
-                                  "all that you feel are empty glass flasks");
-                Console.WriteLine("The " + EnemyStats.nameEnemy + " strikes you with a mighty blow and you lose "
-                                  + damageTaken + " health!");
+                RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
+                Console.WriteLine(
+                    "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
+                Console.WriteLine("You gain " + _potionValue + " health");
             }
-            else
+            else if (RunGame.currentPlayer.health < maxHealth)
             {
-                //Declare how much a flask will heal
-                int _potionValue = RunGame.currentPlayer.potionValue;
+                RunGame.currentPlayer.health += _potionValue;
 
-                //Declare how much damage you will take
-                int damageTaken = ((EnemyStats.powerEnemy / 2) + rand.Next(0, 5)) - RunGame.currentPlayer.armorValue;
-                if (damageTaken < 0)
-                    damageTaken = 0;
-
-                //Note down how many potions the player has got left
-                RunGame.currentPlayer.potions--;
-
-                //Reach max health and still use a flask
-                if ((RunGame.currentPlayer.health + _potionValue) > maxHealth)
-                {
-                    RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
-                    Console.WriteLine(
-                        "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
-                    Console.WriteLine("You gain " + _potionValue + " health");
-                }
-                else if (RunGame.currentPlayer.health < maxHealth)
-                {
-                    RunGame.currentPlayer.health += _potionValue;
-
-                    //Continue the story
-                    Console.WriteLine(
-                        "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
-                    Console.WriteLine("You gain " + _potionValue + " health");
-                }
-
-                //Take damage
-                Console.ReadLine();
-                Console.Clear();
-                Console.WriteLine("As you were occupied, the " + EnemyStats.nameEnemy + " advanced and struck.");
-                Console.WriteLine("You lose " + damageTaken + " health!");
-                RunGame.currentPlayer.health -= damageTaken;
-
-                //Continue
-                Console.ReadLine();
+                //Continue the story
+                Console.WriteLine(
+                    "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
+                Console.WriteLine("You gain " + _potionValue + " health");
             }
+
+            //Take damage
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("As you were occupied, the " + EnemyStats.nameEnemy + " advanced and struck.");
+            Console.WriteLine("You lose " + damageTaken + " health!");
+            RunGame.currentPlayer.health -= damageTaken;
+
+            //Continue
+            Console.ReadLine();
+        }
     }
 
     private void Leap()

@@ -15,7 +15,7 @@ public class Encounter
     {
         Console.WriteLine("You encountered an enemy! - CONCEPT");
         Console.ReadKey();
-        Combat(false, "Human Rogue", 20,60, 69);
+        Combat(false, "Human Rogue", 20,60, 5);
     }
 
     private static void BasicFightEncounter()
