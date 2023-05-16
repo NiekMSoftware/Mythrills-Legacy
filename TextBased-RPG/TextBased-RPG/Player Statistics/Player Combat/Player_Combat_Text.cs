@@ -49,7 +49,8 @@ public class Player_Combat_Text
             EnemyFailedDefendOrNot();
         else if (Enemy_Choice.isHealing)
             EnemyFailedHealingOrNot();
-        else //if the enemy is not defending, display text for attacking
+        else //if the enemy is not defending or healing,
+             //display text for attacking
         {
             int dealDamage = RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue;
 
@@ -106,7 +107,6 @@ public class Player_Combat_Text
     
     void EnemyDidDefend()
     {
-        
         //Display the text here of when the Enemy Defends
         string[] textDefending = new[]
         {
@@ -142,25 +142,13 @@ public class Player_Combat_Text
     }
 
         #region Enemy Healing
-
-        void CanHeal()
-        {
-            if (EnemyStats.potions <= 0)
-                _enemyChoice.EnemyChoice();
-            else
-                EnemyRanOut();
-        }
+        
         void EnemyDidHeal()
         {
-            //Calculate how much health the enemy regains
-            int regainedHealth = rand.Next(15,26);
-            EnemyStats.potionValue = regainedHealth;
-            
             //Display several strings
             string[] text = new[]
             {
-                $"Successfully, the {EnemyStats.nameEnemy} gained" +
-                $"\n{regainedHealth} health back!"
+                $"\nThe {EnemyStats.nameEnemy} successfully healed"
             };
 
             //Randomize the array
@@ -168,19 +156,6 @@ public class Player_Combat_Text
 
             //Display the text
             Console.WriteLine(healingText);
-            
-            //Add health back to the enemy
-            EnemyStats.healthEnemy += regainedHealth;
-            
-            //Reduce the amount of Potions
-            EnemyStats.potions--;
-            if (EnemyStats.potions <= 0) //Reset the potions back to 0
-                EnemyStats.potions = 0;
-
-            //Turn the bool back to false
-            Enemy_Choice.isHealing = false;
-            
-            //Resume logic
         }
 
         void EnemyFailedHealing()
@@ -206,11 +181,6 @@ public class Player_Combat_Text
             //Continue logic
         }
 
-        void EnemyRanOut()
-        {
-            
-        }
-        
         #endregion
     
     #endregion

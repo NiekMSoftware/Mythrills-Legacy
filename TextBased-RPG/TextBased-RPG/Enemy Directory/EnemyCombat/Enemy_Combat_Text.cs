@@ -110,14 +110,27 @@ public class Enemy_Combat_Text
 
     public void EnemyHeals()
     {
+        //Calculate how much health the enemy regains
+        int regainedHealth = rand.Next(15,26);
+        EnemyStats.potionValue = regainedHealth;
+        
         string[] text = new[]
         {
-            $"\nThe {EnemyStats.nameEnemy} grabbed a flask from its belt.",
+            $"The {EnemyStats.nameEnemy} grabbed a flask from its belt." +
+            $"\n It gained {regainedHealth} health back!",
         };
 
         string healingText = text[rand.Next(0, text.Length)];
 
         Console.WriteLine(healingText);
+        
+        //Add health back to the enemy
+        EnemyStats.healthEnemy += regainedHealth;
+            
+        //Reduce the amount of Potions
+        EnemyStats.potions--;
+        if (EnemyStats.potions <= 0) //Reset the potions back to 0
+            EnemyStats.potions = 0;
     }
 
     #endregion

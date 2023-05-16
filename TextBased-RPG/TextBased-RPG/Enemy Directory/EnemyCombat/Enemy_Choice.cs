@@ -20,22 +20,41 @@ public class Enemy_Choice
     {
         if (EnemyStats.healthEnemy <= EnemyStats.maxHealthEnemy / 3)
         {
-            //Make it a 11% chance for the enemy to attack when 
-            //they should actually heal
-            switch (rand.Next(0,9))
+            if (EnemyStats.potions <= 0)
             {
-                case 0:
-                    isHealing = true;
-                    EnemyHeals();
-                    break;
-                case 1:
-                    isHealing = false;
-                    EnemyAttacks();
-                    break;
-                default:
-                    isHealing = true;
-                    EnemyHeals();
-                    break;
+                //Give the AI still 25% chance to try to Heal
+                switch (rand.Next(0,5))
+                {
+                    case 0:
+                        EnemyAttacks();
+                        break;
+                    case 1:
+                        EnemyCantHeal();
+                        break;
+                    default:
+                        EnemyAttacks();
+                        break;
+                }
+            }
+            else
+            {
+                //Make it a 11% chance for the enemy to attack when 
+                //they should actually heal
+                switch (rand.Next(0,9))
+                {
+                    case 0:
+                        isHealing = true;
+                        EnemyHeals();
+                        break;
+                    case 1:
+                        isHealing = false;
+                        EnemyAttacks();
+                        break;
+                    default:
+                        isHealing = true;
+                        EnemyHeals();
+                        break;
+                }
             }
         }
         else
@@ -47,6 +66,7 @@ public class Enemy_Choice
                 case 0:
                     //Attack
                     isDefending = false;
+                    isHealing = false;
                     EnemyAttacks();
                     break;
                 case 1:
@@ -57,6 +77,7 @@ public class Enemy_Choice
                 default:
                     //Attack
                     isDefending = false;
+                    isHealing = false;
                     EnemyAttacks();
                     break;
             }
@@ -89,5 +110,10 @@ public class Enemy_Choice
     {
         //Run the healing logic
         _enemyText.EnemyHeals();
+    }
+
+    private void EnemyCantHeal()
+    {
+        
     }
 }
