@@ -15,7 +15,7 @@ public class Encounter
     {
         Console.WriteLine("You encountered an enemy! - CONCEPT");
         Console.ReadKey();
-        Combat(false, "Human Rogue", 20,60, 5);
+        Combat(false, "Human Rogue", 20,32, 100, 69);
     }
 
     private static void BasicFightEncounter()
@@ -23,7 +23,7 @@ public class Encounter
         Console.Clear();
         Console.WriteLine("You turn the corner and see another enemy..");
         Console.ReadKey();
-        Combat(true, "", 0,0,0);
+        Combat(true, "", 0,0,0, 0);
     }
 
     //Encounter tools
@@ -42,12 +42,13 @@ public class Encounter
     #region Combat & Misc
     
     //-Make a combat system
-    public static void Combat(bool _randomEnemyPower, string _nameEnemy, int _powerEnemy, int _randomHealthEnemy, int _speedEnemy)
+    public static void Combat(bool _randomEnemyPower, string _nameEnemy, int _armorValue, int _powerEnemy, int _HealthEnemy, int _speedEnemy)
     {
         //Random enemy encounter
         if (_randomEnemyPower)
         {
             EnemyStats.nameEnemy = GetName();
+            EnemyStats.armorEnemy = rand.Next(5, 25);
             EnemyStats.powerEnemy = rand.Next(15,40);
             EnemyStats.speedEnemy = rand.Next(20, 40);
             
@@ -62,8 +63,11 @@ public class Encounter
             EnemyStats.speedEnemy = _speedEnemy;
             
             //Health
-            EnemyStats.healthEnemy = _randomHealthEnemy;
-            EnemyStats.maxHealthEnemy = _randomHealthEnemy;
+            EnemyStats.healthEnemy = _HealthEnemy;
+            EnemyStats.maxHealthEnemy = _HealthEnemy;
+            
+            //Armour
+            EnemyStats.armorEnemy = _armorValue;
         }
         
         //Make a reference to the Experience class
@@ -74,12 +78,13 @@ public class Encounter
         {
             Console.Clear();
             Console.WriteLine(EnemyStats.nameEnemy);
-            Console.WriteLine("Power: " + EnemyStats.powerEnemy + " | " + "Health: " + EnemyStats.healthEnemy + " / " + EnemyStats.maxHealthEnemy +
-                              "\nSpeed: " + EnemyStats.speedEnemy + " | " + EnemyStats.potions + " potions");
+            Console.WriteLine("Power: " + EnemyStats.powerEnemy + " | " + "Speed: " + EnemyStats.speedEnemy
+                              + "\nArmour: " + EnemyStats.armorEnemy + " | " + "Health: " +
+                              EnemyStats.healthEnemy + " / " + EnemyStats.maxHealthEnemy +
+                              "\nPotions: " + EnemyStats.potions);
             Console.WriteLine($"|=============================|");
             Console.WriteLine($"|   A(ttack)     D(efend)     |");
-            Console.WriteLine($"|    R(un)        H(eal)      |");
-            Console.WriteLine($"|          L(eap)             |");
+            Console.WriteLine($"|    H(eal)       L(eap)      |");
             Console.WriteLine($"|=============================|");
             Console.WriteLine("");
             Console.WriteLine($"You:                         ");
@@ -139,6 +144,7 @@ public class Encounter
          */
         int experiencePlayer = 0;
         
+        //TODO: Putt this in a new method with a SWitch case
         if (EnemyStats.powerEnemy <= 20)
         {
             //Randomize the exp gain
@@ -158,6 +164,10 @@ public class Encounter
         {
             //Randomize the exp gain
             experiencePlayer = rand.Next(57, 105);
+        }
+        else if (EnemyStats.powerEnemy <= 70)
+        {
+            experiencePlayer = rand.Next(106, 231);
         }
         
         //Insert EXP to player

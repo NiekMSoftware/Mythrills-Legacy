@@ -7,7 +7,7 @@ public class EnemyStats
     
     //Power
     public static int powerEnemy = 0;
-    
+
     //Health
     public static int healthEnemy = 0;
     public static int maxHealthEnemy;

@@ -13,7 +13,7 @@ public class Player
     public int maxHealth = 100;
     
     //Armor
-    public int armorValue = 0;
+    public int armorValue = 5;
     
     //Damage
     public int damage = 10;

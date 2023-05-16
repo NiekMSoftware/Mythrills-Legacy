@@ -1,14 +1,21 @@
 ﻿using System.Collections.Specialized;
+using RPG.EnemyCombat;
 
 namespace RPG;
 
 public class PlayerInput
 {
+    //Enemy stats
     private static EnemyStats _enemy = new EnemyStats();
-    private static EnemyActions _eActions = new EnemyActions(); 
+    
+    //Combat Enemy and Player
+    private Enemy_Choice enemyCombat = new Enemy_Choice();
+    private Player_Combat_Text playerText = new Player_Combat_Text();
+    
+    //Random
     private static Random rand = new Random();
 
-    public static bool isAttacking;
+    public bool isAttacking;
     public static bool isHealing;
 
     //TODO: Check if the player is healing, and when they are let the AI heal too
@@ -28,9 +35,6 @@ public class PlayerInput
             case string d when d == "d":
                 Defend();
                 break;
-            case string r when r == "r":
-                Run();
-                break;
             case string h when h == "h":
                 Heal();
                 break;
@@ -48,38 +52,23 @@ public class PlayerInput
     {
         isAttacking = true;
         
-        //Make a random value so it will add more damage to our Weapon (so critical hit)
-        int dealDamage = 0;
-
-        dealDamage = RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue;
-        
+        //Check if the enemy is faster than the player
         if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
         {
-            EnemyCombatChoise.EnemyChoice_SpeedHigh();
-            if (EnemyActions.isDefending)
-            {
-                isAttacking = false;
-                //Run the Class that checks what the player chance is
-                PlayerActions.EnemyIsDefending();
-            }
-            else if (EnemyActions.isHealing)
-            {
-                isAttacking = false;
-                PlayerActions.HealOrAttack();
-            }
-            else if (isAttacking = true)
-            {
-                Console.WriteLine($"Me dealt {dealDamage} damage");
-                EnemyStats.healthEnemy -= EnemyStats.maxHealthEnemy - dealDamage;
-            }
-        }
+            //Run the enemy script
+            enemyCombat.EnemyChoice();
+            
+            //Run the Player Attack 
+            playerText.PlayerAttackSlow();
+            
+        } // If not then run the other combat
         else if (RunGame.currentPlayer.speed > EnemyStats.speedEnemy)
         {
-            Console.WriteLine($"I attack and dealt {dealDamage}");
-            EnemyActions.Attack();
-            
-            //Lower the health of the Enemy    
-            EnemyStats.healthEnemy -= dealDamage;
+            //First run the Player Combat
+            playerText.PlayerAttackFast();
+
+            //After the Player Combat run the Enemy combat
+            enemyCombat.EnemyChoice();
         }
         
         Console.ReadLine();
@@ -148,33 +137,7 @@ public class PlayerInput
 
         Console.ReadLine();
     }
-
-    private void Run()
-    {
-        //Make a random generated number for a chance to run away
-        if (rand.Next(0, 2) == 0)
-        {
-            //Calculate the amount of damage being taken
-            int damageTaken = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
-            if (damageTaken < 0)
-                damageTaken = 0;
-
-            //Continue story
-            Console.WriteLine("As you sprint away from the " + EnemyStats.nameEnemy +
-                              ", its strike catches you in the back, sending you sprawling onto the ground");
-            Console.WriteLine("You lose " + damageTaken + " health and are unable to escape.");
-            Console.ReadLine();
-        }
-        else
-        {
-            Console.WriteLine("You ran away from the " + EnemyStats.nameEnemy + " successfully escaped!");
-            Console.ReadLine();
-            //go to store - CONCEPT
-        }
-
-        Console.ReadLine();
-    }
-
+    
     private void Heal()
     {
         int maxHealth = RunGame.currentPlayer.maxHealth;
