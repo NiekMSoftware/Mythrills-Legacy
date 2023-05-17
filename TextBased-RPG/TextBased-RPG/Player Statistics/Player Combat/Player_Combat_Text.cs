@@ -5,9 +5,14 @@ namespace RPG;
 public class Player_Combat_Text
 {
     private Random rand = new Random();
+
+    private Enemy_Combat_Text enemyText = new Enemy_Combat_Text();
+    private Enemy_Choice enemyCombat = new Enemy_Choice();
     
     //Reference the Enemy Choice class
     private Enemy_Choice _enemyChoice = new Enemy_Choice();
+
+    #region Player Attacks
 
     public void PlayerAttackFast()
     {
@@ -48,9 +53,11 @@ public class Player_Combat_Text
             //Use the Method to display the array
             EnemyFailedDefendOrNot();
         else if (Enemy_Choice.isHealing)
-            EnemyFailedHealingOrNot();
+            EnemyDidHeal();
+        else if (Enemy_Choice.cantHeal)
+            EnemyFailedHealing();
         else //if the enemy is not defending or healing,
-             //display text for attacking
+            //display text for attacking
         {
             int dealDamage = RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue;
 
@@ -69,6 +76,56 @@ public class Player_Combat_Text
             EnemyStats.healthEnemy -= dealDamage;
         }
     }
+
+    #endregion
+
+    //TODO: Make 5 different strings for when you heal
+    #region Player Heals
+
+    public void PlayerHeals()
+    {
+        int potionValue = RunGame.currentPlayer.potionValue;
+
+        if (RunGame.currentPlayer.health + potionValue > RunGame.currentPlayer.maxHealth)
+            RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
+
+        if (RunGame.currentPlayer.health < RunGame.currentPlayer.maxHealth)
+        {
+            string[] text = new[]
+            {
+                $"You gained {potionValue} health!"
+            };
+
+            string healingText = text[rand.Next(0, text.Length)];
+
+            Console.WriteLine(healingText);
+
+            //Add the potion health value to the player's Health
+            RunGame.currentPlayer.health += potionValue;
+            
+            //Check if the Enemy's HP is below a third
+            if (EnemyStats.healthEnemy <= EnemyStats.maxHealthEnemy / 3)
+            {
+                //Give it a 10% chance for the enemy to Attack instead of heal
+                switch (rand.Next(0,10))
+                {
+                    case 0:
+                        enemyText.EnemyHeals();
+                        break;
+                    case 1:
+                        enemyCombat.EnemyAttacks();
+                        break;
+                    default:
+                        enemyText.EnemyHeals();
+                        break;
+                }
+            }
+            else
+                enemyText.EnemyDamagesYou();
+        }
+    }
+
+    #endregion
 
     #region Player Resoponse to Enemy Interaction
 
@@ -91,18 +148,10 @@ public class Player_Combat_Text
 
     void EnemyFailedHealingOrNot()
     {
-        switch (rand.Next(0,8))
-        {
-            case 0:
-                EnemyDidHeal();
-                break;
-            case 1:
-                EnemyFailedHealing();
-                break;
-            default:
-                EnemyDidHeal();
-                break;
-        }
+        if(Enemy_Choice.cantHeal)
+            EnemyFailedHealing();
+        else
+            EnemyDidHeal();    
     }
     
     void EnemyDidDefend()
@@ -169,7 +218,7 @@ public class Player_Combat_Text
                 
                 "The enemy thought he could heal, but you managed" +
                 $"\nto deal {dealDamage} damage!" +
-                $"\nThe {EnemyStats.nameEnemy} was unable to regain health"
+                $"\n\nThe {EnemyStats.nameEnemy} was unable to regain health"
             };
 
             //Randomize the array
@@ -178,11 +227,13 @@ public class Player_Combat_Text
             //Display the text
             Console.WriteLine(damageText);
             
+            //Remove health based on the damage
+            EnemyStats.healthEnemy -= dealDamage;
+
             //Continue logic
         }
 
         #endregion
     
     #endregion
-   
 }

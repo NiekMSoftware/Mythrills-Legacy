@@ -105,7 +105,7 @@ public class Enemy_Combat_Text
 
     #endregion
 
-    //TODO: Finish randomizing Strings
+    //TODO: Finish randomizing Strings and Add more strings
     #region Enemy Heal Methods
 
     public void EnemyHeals()
@@ -131,6 +131,39 @@ public class Enemy_Combat_Text
         EnemyStats.potions--;
         if (EnemyStats.potions <= 0) //Reset the potions back to 0
             EnemyStats.potions = 0;
+    }
+
+    public void EnemyCantHeal()
+    {
+        string[] text = new[]
+        {
+            $"Enemy failed at healing"
+        };
+
+        //Randomize the strings
+        string receivedDamage = text[rand.Next(0, text.Length)];
+        
+        //Display the text
+        Console.WriteLine(receivedDamage);
+    }
+
+    public void EnemyDamagesYou()
+    {
+        int dealtDamage = EnemyStats.powerEnemy / 2 + rand.Next(3, 12);
+        
+        string[] text = new[]
+        {
+            $"Whilst you healed, the {EnemyStats.nameEnemy} dealt" +
+            $"\n{dealtDamage} damage to you!",
+        };
+
+        string damageText = text[rand.Next(0, text.Length)];
+
+        //Display text
+        Console.WriteLine(damageText);
+        
+        //Reduce the health based off the damage
+        RunGame.currentPlayer.health -= dealtDamage;
     }
 
     #endregion

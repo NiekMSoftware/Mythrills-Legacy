@@ -78,7 +78,7 @@ public class Encounter
         {
             Console.Clear();
             Console.WriteLine(EnemyStats.nameEnemy);
-            Console.WriteLine("Power: " + EnemyStats.powerEnemy + " | " + "Speed: " + EnemyStats.speedEnemy
+            Console.WriteLine("Level: " + EnemyStats.powerEnemy + " | " + "Speed: " + EnemyStats.speedEnemy
                               + "\nArmour: " + EnemyStats.armorEnemy + " | " + "Health: " +
                               EnemyStats.healthEnemy + " / " + EnemyStats.maxHealthEnemy +
                               "\nPotions: " + EnemyStats.potions);

@@ -11,6 +11,7 @@ public class Enemy_Choice
     //Boolean
     public static bool isDefending;
     public static bool isHealing;
+    public static bool cantHeal;
     
     //Random
     private static Random rand = new Random();
@@ -26,12 +27,15 @@ public class Enemy_Choice
                 switch (rand.Next(0,5))
                 {
                     case 0:
+                        cantHeal = false;
                         EnemyAttacks();
                         break;
                     case 1:
+                        cantHeal = true;
                         EnemyCantHeal();
                         break;
                     default:
+                        cantHeal = false;
                         EnemyAttacks();
                         break;
                 }
@@ -43,16 +47,19 @@ public class Enemy_Choice
                 switch (rand.Next(0,9))
                 {
                     case 0:
-                        isHealing = true;
-                        EnemyHeals();
+                        cantHeal = true;
+                        isHealing = false;
+                        HealingFailure();
                         break;
                     case 1:
                         isHealing = false;
+                        cantHeal = false;
                         EnemyAttacks();
                         break;
                     default:
-                        isHealing = true;
-                        EnemyHeals();
+                        cantHeal = true;
+                        isHealing = false;
+                        HealingFailure();
                         break;
                 }
             }
@@ -84,8 +91,9 @@ public class Enemy_Choice
         }
     }
     
-    private void EnemyAttacks()
+    public void EnemyAttacks()
     {
+        //20% chance of hitting a Critical Hit
         switch (rand.Next(0,5))
         {
             case 0:
@@ -105,7 +113,23 @@ public class Enemy_Choice
         //Run the Defend logic    
         _enemyText.EnemyDefends();
     }
-    
+
+    private void HealingFailure()
+    {
+        //Make it a 12% chance for the healing to fail
+        switch (rand.Next(0,7))
+        {
+            case 0:
+                EnemyHeals();
+                break;
+            case 1:
+                EnemyCantHeal();
+                break;
+            default:
+                EnemyCantHeal();
+                break;
+        }
+    }
     private void EnemyHeals()
     {
         //Run the healing logic
@@ -114,6 +138,6 @@ public class Enemy_Choice
 
     private void EnemyCantHeal()
     {
-        
+        _enemyText.EnemyCantHeal();
     }
 }

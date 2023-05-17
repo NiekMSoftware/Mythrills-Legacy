@@ -10,6 +10,7 @@ public class PlayerInput
     
     //Combat Enemy and Player
     private Enemy_Choice enemyCombat = new Enemy_Choice();
+    private Enemy_Combat_Text enemyText = new Enemy_Combat_Text();
     private Player_Combat_Text playerText = new Player_Combat_Text();
     
     //Random
@@ -158,44 +159,8 @@ public class PlayerInput
         }
         else
         {
-            //Declare how much a flask will heal
-            int _potionValue = RunGame.currentPlayer.potionValue;
-
-            //Declare how much damage you will take
-            int damageTaken = ((EnemyStats.powerEnemy / 2) + rand.Next(0, 5)) - RunGame.currentPlayer.armorValue;
-            if (damageTaken < 0)
-                damageTaken = 0;
-
-            //Note down how many potions the player has got left
-            RunGame.currentPlayer.potions--;
-
-            //Reach max health and still use a flask
-            if ((RunGame.currentPlayer.health + _potionValue) > maxHealth)
-            {
-                RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
-                Console.WriteLine(
-                    "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
-                Console.WriteLine("You gain " + _potionValue + " health");
-            }
-            else if (RunGame.currentPlayer.health < maxHealth)
-            {
-                RunGame.currentPlayer.health += _potionValue;
-
-                //Continue the story
-                Console.WriteLine(
-                    "You reached into your pouch and pull out a glowing, red flask. You take a long drink.");
-                Console.WriteLine("You gain " + _potionValue + " health");
-            }
-
-            //Take damage
-            Console.ReadLine();
-            Console.Clear();
-            Console.WriteLine("As you were occupied, the " + EnemyStats.nameEnemy + " advanced and struck.");
-            Console.WriteLine("You lose " + damageTaken + " health!");
-            RunGame.currentPlayer.health -= damageTaken;
-
-            //Continue
-            Console.ReadLine();
+            playerText.PlayerHeals();
+            Console.ReadKey();
         }
     }
 
