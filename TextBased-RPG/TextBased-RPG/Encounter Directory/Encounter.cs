@@ -1,13 +1,19 @@
 ﻿using System.Collections;
+using RPG.Room_Generation;
 
 namespace RPG;
 
 public class Encounter
 {
     #region Random and References
+    
     private static Random rand = new Random();
+    
     private static PlayerInput _playerInput = new PlayerInput();
     private static Player _player = new Player();
+
+    private static Generation generation;
+    
     #endregion
 
     #region Encounters
@@ -18,24 +24,49 @@ public class Encounter
         Combat(false, "Human Rogue", 20,32, 100, 69);
     }
 
-    private static void BasicFightEncounter()
+    public static void AreaEnemyEncounter()
     {
-        Console.Clear();
-        Console.WriteLine("You turn the corner and see another enemy..");
-        Console.ReadKey();
-        Combat(true, "", 0,0,0, 0);
-    }
-
-    //Encounter tools
-    public static void RandomEncounter()
-    {
-        switch (rand.Next(0,1))
+        //Turn off the City encounter
+        generation.cityEnemiesEncounter = false;
+        
+        //Run the rest of logic
+        switch (rand.Next(0,3))
         {
             case 0:
-                BasicFightEncounter();
+                SkeletonEncounter();
+                break;
+            default:
+                SkeletonEncounter();
                 break;
         }
     }
+
+    #region BiomeEncounters
+
+    public static void SkeletonEncounter()
+    {
+        string[] text = new[]
+        {
+            "You feel the ground shake violently, you ready your sword for combat.." +
+            "\nA white hand comes out of the ground reaching to the ground to pull itself back up.." +
+            "\n\nA new skeleton has appeared!",
+            
+            "Joe came as well",
+            
+            "Okay he pulled up"
+        };
+
+        string introSkeleton = text[rand.Next(0, text.Length)];
+
+        Console.WriteLine(introSkeleton);
+        Console.ReadKey();
+        
+        Combat(false, "Skeleton", 0, 10, 50, 15);
+    }
+
+    #endregion
+    
+    //Encounter tools
 
     #endregion
 

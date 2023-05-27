@@ -1,4 +1,6 @@
-﻿namespace RPG;
+﻿using RPG.Room_Generation;
+
+namespace RPG;
 
 public class RunGame
 {
@@ -7,7 +9,7 @@ public class RunGame
     //Reference to the Player Script
     public static Player currentPlayer = new Player();
     
-    //Make a unending loop for battles
+    //Make a unending loop
     public static bool mainLoop = true;
 
     public void StartGame()
@@ -32,13 +34,15 @@ public class RunGame
         Console.ReadKey();
         Console.Clear();
         
-        //First encounter
-        Encounter.FirstEncounter();
+        //Insert story here
         
-        //Random Encounters, ENDLESS MODE
+        
+        //Run the generation of rooms
+        
+
+        //while the mainLoop is true run it
+        
         while (mainLoop)
-        {
-            Encounter.RandomEncounter();
-        }
+            Room.Run();
     }
 }
