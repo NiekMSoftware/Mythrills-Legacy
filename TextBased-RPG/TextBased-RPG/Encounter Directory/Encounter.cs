@@ -47,13 +47,10 @@ public class Encounter
     {
         string[] text = new[]
         {
+            // String 1
             "You feel the ground shake violently, you ready your sword for combat.." +
             "\nA white hand comes out of the ground reaching to the ground to pull itself back up.." +
-            "\n\nA new skeleton has appeared!",
-            
-            "Joe came as well",
-            
-            "Okay he pulled up"
+            "\n\nA skeleton has appeared!",
         };
 
         string introSkeleton = text[rand.Next(0, text.Length)];
@@ -213,6 +210,7 @@ public class Encounter
         Console.WriteLine("You have received a Level Up Crystal!");
         Console.WriteLine("Use this to level up various stats!");
         Console.ReadKey();
+        Console.Clear();
     }
     #endregion
 
