@@ -24,23 +24,6 @@ public class Encounter
         Combat(false, "Human Rogue", 20,32, 100, 69);
     }
 
-    public static void AreaEnemyEncounter()
-    {
-        //Turn off the City encounter
-        generation.cityEnemiesEncounter = false;
-        
-        //Run the rest of logic
-        switch (rand.Next(0,3))
-        {
-            case 0:
-                SkeletonEncounter();
-                break;
-            default:
-                SkeletonEncounter();
-                break;
-        }
-    }
-
     #region BiomeEncounters
 
     public static void SkeletonEncounter()

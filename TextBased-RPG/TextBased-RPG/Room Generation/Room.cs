@@ -25,127 +25,61 @@ public class Room
         }
     }
 
+    #region Story Telling
+
+    public static void Prologue1()
+    {
+        // Introduction
+        Console.WriteLine("You awoke to the stars lit in the distant sky.");
+        Console.WriteLine("As you did so, you remembered the words of your late father.\n");
+        Console.ReadKey();
+        
+        Console.WriteLine("<< Don't you ever think I'm gone son. I'll always be watching you from up there.. >> ");
+        Console.WriteLine("He mumbled, with a moody smile. His father's dying words..\n");
+        Console.ReadKey();
+        
+        Console.WriteLine("As you kept looking at the twinkling dots, you couldn't help but wonder" +
+                          " if they would ever be in your reach.");
+        Console.WriteLine("If you could reach the stars, maybe then you could find your father..\n");
+        Console.ReadKey();
+
+        Console.WriteLine("And tell him..\n\n");
+        
+        // Clear out the Console
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    #endregion
+    
     #region Generate Envoirenment
     
     // Generate all the biomes
     public static void GenerationBiomes()
     {
+        // Story Prologue:
+        Prologue1();
+        
         // Biome 1:
         biomes[0] = new Generation(0,
             new string[]
-            {
-                "You awoke as there was a traveler sitting next to you..\n",
-                "<< Oh you are finally awake >> ",
-                "said the Traveller \n\n",
-                "The traveler asked what your name was, you replied with ", 
-                $"{RunGame.currentPlayer.name}\n\n",
-                "<< So ",
-                $"{RunGame.currentPlayer.name}",
-                ".. go ",
-                "east ",
-                "from here to go to the nearest Town.\n Get some food and rest up!>>\n\n\n"
-            },
-            new ConsoleColor[]
-            {
-                // Game dialogue
-                ConsoleColor.Gray,
-                
-                // Conversation
-                ConsoleColor.DarkYellow,
-                
-                // Game dialogue
-                ConsoleColor.Gray,
-                ConsoleColor.Gray,
-                
-                // Name
-                ConsoleColor.DarkGreen,
-                
-                // Game dialogue
-                ConsoleColor.DarkYellow,
-                
-                // Name
-                ConsoleColor.DarkGreen,
-                
-                // Game dialogue
-                ConsoleColor.DarkYellow,
-                
-                // DIRECTION
-                ConsoleColor.DarkRed,
-                
-                // Game dialogue
-                ConsoleColor.DarkYellow
-            },
-            new string[]
-            {
-                // Choice East
-                "east"
-            },
-            new string[]
-            {
-                // Display Dialogue to go to the east
-                "You slowly make your way to the Town\n\n"
-            },
-            new int[]
-            {
-                1
-            },
-            false,
-            false);
-        
-        // Biome 2:
-        biomes[1] = new Generation(1,
-            new string[]
-            {
-                "You look back to the ",
-                "west ",
-                "As you take a deep breath and continue onwards\n",
-                "to the centre of the City..\n\n",
-                "You hear a noise to the ",
-                "north ",
-                "maybe there is an enemy there or something.."
-            },
-            new ConsoleColor[]
-            {
-                ConsoleColor.Gray,
-                ConsoleColor.Red,
-                ConsoleColor.Gray,
-                ConsoleColor.Gray,
-                ConsoleColor.Gray,
-                ConsoleColor.DarkRed,
-                ConsoleColor.Gray
-            },
-            new string[]
-            {
-                "west",
-                "north"
-            },
-            new string[]
-            {
-                "You decided to go back to ask more questions to the traveler..",
-                "You look around from where the sound came from.. but nothing to see.."
-            },
-            new int[]
-            {
-                // Back to begin
-                0,
-                // Go north
-                2,
-                // Go east
-                3,
-                //Go South
-                4
-            },
-            false,
-            false);
-        biomes[2] = new Generation(2,
-            new string[]
-            {
-                "Blah blah blah.. go ",
+            { 
+                "<< the Grass Fields >> \n\n",
+                "Awoken from the fields, with an epiphany in regards to what you must do,\n",
+                "you set out on a journey to gain strength.\n",
+                "Not remembering how you got to lie down in said fields, you scratched your head\n",
+                "and decided to ask around if they found anyone.\n\n",
+                "In the night, a bright city at ",
                 "south ",
-                "to head back to the city"
+                "lit up the skies themselves, seemingly stronger than the stars."
             },
             new ConsoleColor[]
             {
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
                 ConsoleColor.Gray,
                 ConsoleColor.DarkRed,
                 ConsoleColor.Gray
@@ -156,14 +90,87 @@ public class Room
             },
             new string[]
             {
-                "You decided to quickly go back to the City"
+                "You decided to walk down the path to the city..\n" +
+                "You also heard a noise from deep below.."
             },
             new int[]
             {
-                1
+               1
+            },
+            false,
+            false);
+        
+        // Biome 2:
+        biomes[1] = new Generation(1,
+            new string[]
+            {
+                "<< Carestavis, Starlit City >> \n",
+                "Upon encountering the city, you noticed a lack of guards atop the city's towering walls,\n",
+                "along with a gate to the ",
+                "north ",
+                "that appeared to have been smashed open by something terrifyingly strong.\n\n",
+                "Strangely, a tent seemed to have been set down to the ",
+                "west ",
+                "next to the gates."
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray
+            },
+            new string[]
+            {
+                // Choice East
+                "north",
+                "west"
+            },
+            new string[]
+            {
+                // Display dialogue for entering the gates
+                "You decided to enter the main gate...",
+                
+                // Display dialogue for approaching the tent
+                "Upon approaching the tent, a man yells at you loudly;"
+            },
+            new int[]
+            {
+                // go north into the gate
+                2,
+                
+                // go to the tent
+                3
             },
             true,
             false);
+        biomes[2] = new Generation(2,
+            new string[]
+            {
+               
+            },
+            new ConsoleColor[]
+            {
+               
+            },
+            new string[]
+            {
+               // Choises
+            },
+            new string[]
+            {
+               
+            },
+            new int[]
+            {
+                
+            },
+            false,
+            true);
     }
 
     #endregion
@@ -247,7 +254,19 @@ public class Room
         {
             Console.Clear();
             Encounter.SkeletonEncounter();
+            
+            biomes[currentBiome].areaEnemiesEncounter = false;
         }
+        
+        // If the current biome is set for a static player death
+            // Insert that down here
+            if (biomes[currentBiome].playerDied)
+            {
+                // Insert logic for player death
+                PlayerDeath.PlayerDiedAtGate();
+                biomes[currentBiome].playerDied = false;
+            }
+            
     }
 
     #endregion
@@ -265,14 +284,14 @@ public class Generation
     public int[] exit;
     
     public bool areaEnemiesEncounter;
-    public bool cityEnemiesEncounter;
+    public bool playerDied;
 
     public Generation(int _biomeID, string[] _description, ConsoleColor[] _textColor, string[] _choices, 
-                        string[] _results, int[] _exit, bool _areaEnemiesEncounter, bool _cityEnemiesEncounter)
+                        string[] _results, int[] _exit, bool _areaEnemiesEncounter, bool _playerDied)
     {
         //Connect up the variables
         biomeID = _biomeID;
-        
+
         description = _description;
         textColor = _textColor;
         
@@ -282,6 +301,6 @@ public class Generation
         exit = _exit;
 
         areaEnemiesEncounter = _areaEnemiesEncounter;
-        cityEnemiesEncounter = _cityEnemiesEncounter;
+        playerDied = _playerDied;
     }
 }
