@@ -11,38 +11,44 @@ public class RunGame
     
     //Make a unending loop
     public static bool mainLoop = true;
+    
+    // Boolean for player Name
+    public static bool hasNoName;
 
     public void StartGame()
     {
+        hasNoName = false;
         Console.Clear();
-        
-        //start game here
-        Console.WriteLine("PLACEHOLDER NAME!");
-        Console.WriteLine("Insert Player Name:");
 
-        //Insert player name
-        currentPlayer.name = Console.ReadLine();
-        Console.Clear();
-        
-        //Check if the player has given no input for a name
-        if (currentPlayer.name == "")
-            Console.WriteLine("You don't even remember your own name...");
-        else
-            Console.WriteLine("You know certainly your name is " + currentPlayer.name);
+        while (!hasNoName)
+        {
+            // Ask the player for their name
+            Console.WriteLine("What is your name Traveller?");
+            string name = Console.ReadLine();
 
-        //continue story
-        Console.ReadKey();
-        Console.Clear();
-        
-        //Insert story here
-        
-        
-        //Run the generation of rooms
-        
+            if (name == "")
+            {
+                Console.WriteLine("Please Traveller, tell me your name..");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                Console.WriteLine($"Hmm.. alright {name}! You must embark on a journey");
+                Console.ReadKey();
+                Console.WriteLine("It won't be easy.. but I know you can do it!");
+                Console.ReadKey();
+                Console.Clear();
+                hasNoName = true;
+            }
 
-        //while the mainLoop is true run it
-        
+        }
+       
         while (mainLoop)
             Room.Run();
+        
+        // Clear out the console
+        Console.ReadKey();
+        Console.Clear();
     }
 }
