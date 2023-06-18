@@ -3,31 +3,37 @@
 public class GainExperience
 {
     private static Random rand = new Random();
+    private Player currentPlayer;
+
+    public GainExperience(Player player)
+    {
+        this.currentPlayer = player;
+    }
 
     public void LevelUp()
     {
         int remainingExp;
         
         //Check if the EXP hit its max EXP and add more value to that
-        if (RunGame.currentPlayer.exp >= RunGame.currentPlayer.maxExp)
+        if( this.currentPlayer.exp >= this.currentPlayer.maxExp)
         {
             //Add a level
-            RunGame.currentPlayer.level++;
+            this.currentPlayer.level++;
 
             //Calculate the amount of how much exp is left
-            remainingExp = RunGame.currentPlayer.exp - RunGame.currentPlayer.maxExp;
+            remainingExp = this.currentPlayer.exp - this.currentPlayer.maxExp;
 
             //Return the exp back to zero
-            RunGame.currentPlayer.exp = 0;
+            this.currentPlayer.exp = 0;
             
             //Add the amount that remained
-            RunGame.currentPlayer.exp = remainingExp + RunGame.currentPlayer.exp;
+            this.currentPlayer.exp = remainingExp + this.currentPlayer.exp;
 
             //Increase the amount of exp by a random value
-            RunGame.currentPlayer.maxExp = (RunGame.currentPlayer.minExp + rand.Next(1, 5) + RunGame.currentPlayer.maxExp);
+            this.currentPlayer.maxExp = (this.currentPlayer.minExp + rand.Next(1, 5) + this.currentPlayer.maxExp);
             
             //Add a level up crystal to the player's inventory
-            RunGame.currentPlayer.levelCrystal++;
+            this.currentPlayer.levelCrystal++;
         }
     }
     

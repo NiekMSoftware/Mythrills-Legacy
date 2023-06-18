@@ -7,17 +7,21 @@ public class Encounter
 {
     #region Random and References
     
-    private static Random rand = new Random();
-    
-    private static PlayerInput _playerInput = new PlayerInput();
-    private static Player _player = new Player();
-
+    private Random rand = new Random();
+    private PlayerInput _playerInput;
+    private Player _player;
     private static Generation generation;
     
     #endregion
 
+    public Encounter(Player player)
+    {
+        this._player = player;
+        this._playerInput = new PlayerInput(this._player);
+    }
+    
     #region Encounters
-    public static void FirstEncounter()
+    public void FirstEncounter()
     {
         Console.WriteLine("You encountered an enemy! - CONCEPT");
         Console.ReadKey();
@@ -26,7 +30,7 @@ public class Encounter
 
     #region BiomeEncounters
 
-    public static void SkeletonEncounter()
+    public void SkeletonEncounter()
     {
         string[] text = new[]
         {
@@ -53,7 +57,7 @@ public class Encounter
     #region Combat & Misc
     
     //-Make a combat system
-    public static void Combat(bool _randomEnemyPower, string _nameEnemy, int _armorValue, int _powerEnemy, int _HealthEnemy, int _speedEnemy)
+    public void Combat(bool _randomEnemyPower, string _nameEnemy, int _armorValue, int _powerEnemy, int _HealthEnemy, int _speedEnemy)
     {
         //Random enemy encounter
         if (_randomEnemyPower)
@@ -82,7 +86,7 @@ public class Encounter
         }
         
         //Make a reference to the Experience class
-        GainExperience gainEXP = new GainExperience();
+        GainExperience gainEXP = new GainExperience(this._player);
 
         //Make a loop using Health
         while (EnemyStats.healthEnemy > 0)
@@ -99,10 +103,10 @@ public class Encounter
             Console.WriteLine($"|=============================|");
             Console.WriteLine("");
             Console.WriteLine($"You:                         ");
-            Console.WriteLine($"Potions: "+ RunGame.currentPlayer.potions + " Health: "
-                              + RunGame.currentPlayer.health + " / " + RunGame.currentPlayer.maxHealth);
-            Console.WriteLine($"Level: " + RunGame.currentPlayer.level + " | EXP: " + RunGame.currentPlayer.exp + " / "
-                              + RunGame.currentPlayer.maxExp);
+            Console.WriteLine($"Potions: "+ this._player.potions + " Health: "
+                              + this._player.health + " / " + this._player.maxHealth);
+            Console.WriteLine($"Level: " + this._player.level + " | EXP: " + this._player.exp + " / "
+                              + this._player.maxExp);
 
             if (_speedEnemy > _player.speed)
             {
@@ -118,7 +122,7 @@ public class Encounter
                 _playerInput.Input();
             }
             
-            if (RunGame.currentPlayer.health <= 0)
+            if (this._player.health <= 0)
             {
                 //Player dies
                 Console.Clear();
@@ -134,8 +138,8 @@ public class Encounter
                 ResetPlayer();
 
                 //Return to main Menu
-                Game titleScreen = new Game();
-                titleScreen.RunTitleScreen_();
+                //Game titleScreen = new Game();
+                //titleScreen.RunTitleScreen_();
             }
         }
 
@@ -148,7 +152,7 @@ public class Encounter
         Console.ReadLine();
         
         //Add the coins to our player
-        RunGame.currentPlayer.coins += c;
+        this._player.coins += c;
         
         /*
          * Add EXP to our Player
@@ -182,7 +186,7 @@ public class Encounter
         }
         
         //Insert EXP to player
-        RunGame.currentPlayer.exp += experiencePlayer;
+        this._player.exp += experiencePlayer;
             
         //Level up the player
         gainEXP.LevelUp();
@@ -199,29 +203,29 @@ public class Encounter
 
     #region Resetting all Stats Upon Death
 
-    public static void ResetPlayer()
+    public void ResetPlayer()
     {
         //Reset all the stats the player got
-        RunGame.currentPlayer.name = "";
+        this._player.name = "";
 
-        RunGame.currentPlayer.minHealthHealing = 20;
-        RunGame.currentPlayer.health = 100;
-        RunGame.currentPlayer.maxHealth = 100;
-        RunGame.currentPlayer.armorValue = 0;
+        this._player.minHealthHealing = 20;
+        this._player.health = 100;
+        this._player.maxHealth = 100;
+        this._player.armorValue = 0;
 
-        RunGame.currentPlayer.damage = 10;
+        this._player.damage = 10;
         
-        RunGame.currentPlayer.level = 1;
-        RunGame.currentPlayer.exp = 0;
+        this._player.level = 1;
+        this._player.exp = 0;
 
-        RunGame.currentPlayer.evasion = 20;
-        RunGame.currentPlayer.leap = 10;
+        this._player.evasion = 20;
+        this._player.leap = 10;
         
-        RunGame.currentPlayer.coins = 0;
-        RunGame.currentPlayer.potions = 3;
-        RunGame.currentPlayer.potionValue = 30;
+        this._player.coins = 0;
+        this._player.potions = 3;
+        this._player.potionValue = 30;
 
-        RunGame.currentPlayer.weaponValue = 15;
+        this._player.weaponValue = 15;
     }
     
 
@@ -229,7 +233,7 @@ public class Encounter
 
     #region Random Name for Enemy
 
-    public static string GetName()
+    public string GetName()
     {
         switch (rand.Next(0, 4))
         {

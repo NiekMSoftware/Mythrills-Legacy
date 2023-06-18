@@ -11,13 +11,20 @@ public class Enemy_Combat_Text
     //Random
     private Random rand = new Random();
 
+    public Player currentPlayer;
+
+    public Enemy_Combat_Text(Player _player)
+    {
+        this.currentPlayer = _player;
+    }
+
     //TODO: Finish the attack array Methods
     #region Enemy Attack Methods
 
     public void EnemyAttacks()
     {
         //Damage
-        int enemyDamage = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
+        int enemyDamage = EnemyStats.powerEnemy - this.currentPlayer.armorValue;
         
         //Text to give to the Enemy to use, TODO: Give the array 6 different strings
         string[] text = new[]
@@ -39,13 +46,13 @@ public class Enemy_Combat_Text
         Console.WriteLine(enemyText);
         
         //Decrease the health from the given damage
-        RunGame.currentPlayer.health -= enemyDamage;
+        this.currentPlayer.health -= enemyDamage;
     }
 
     public void EnemyAttacksSlower()
     {
         //Damage
-        int enemyDamage = EnemyStats.powerEnemy / RunGame.currentPlayer.armorValue;
+        int enemyDamage = EnemyStats.powerEnemy / this.currentPlayer.armorValue;
         
         //Text to give to the Enemy to use, TODO: Give the array 6 different strings
         string[] text = new[]
@@ -68,7 +75,7 @@ public class Enemy_Combat_Text
         Console.WriteLine(enemyText);
         
         //Decrease the health from the given damage
-        RunGame.currentPlayer.health -= enemyDamage;
+        this.currentPlayer.health -= enemyDamage;
     }
     public void EnemyAttacksCritical()
     {
@@ -90,7 +97,7 @@ public class Enemy_Combat_Text
         Console.WriteLine(enemyText);
         
         //Decrease the health from the given damage
-        RunGame.currentPlayer.health -= enemyDamageCrit;
+        this.currentPlayer.health -= enemyDamageCrit;
     }
     
     #endregion
@@ -163,7 +170,7 @@ public class Enemy_Combat_Text
         Console.WriteLine(damageText);
         
         //Reduce the health based off the damage
-        RunGame.currentPlayer.health -= dealtDamage;
+        this.currentPlayer.health -= dealtDamage;
     }
 
     #endregion

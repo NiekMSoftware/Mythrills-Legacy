@@ -5,18 +5,24 @@ namespace RPG;
 public class Player_Combat_Text
 {
     private Random rand = new Random();
-
-    private Enemy_Combat_Text enemyText = new Enemy_Combat_Text();
-    private Enemy_Choice enemyCombat = new Enemy_Choice();
+    private Enemy_Combat_Text enemyText;
     
     //Reference the Enemy Choice class
-    private Enemy_Choice _enemyChoice = new Enemy_Choice();
+    private Enemy_Choice enemyChoice;
+    public Player currentPlayer;
+        
+    public Player_Combat_Text(Player _player)
+    {
+        this.currentPlayer = _player;
+        //this.enemyChoice = new Enemy_Choice(this.currentPlayer);
+        //this.enemyText = new Enemy_Combat_Text(this.currentPlayer);
+    }
 
     #region Player Attacks
 
     public void PlayerAttackFast()
     {
-        int dealDamage = (RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue);
+        int dealDamage = (this.currentPlayer.damage + this.currentPlayer.weaponValue);
 
         string[] text = new[]
         {
@@ -59,7 +65,7 @@ public class Player_Combat_Text
         else //if the enemy is not defending or healing,
             //display text for attacking
         {
-            int dealDamage = RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue;
+            int dealDamage = this.currentPlayer.damage + this.currentPlayer.weaponValue;
 
             string[] text = new[]
             {
@@ -84,12 +90,12 @@ public class Player_Combat_Text
 
     public void PlayerHeals()
     {
-        int potionValue = RunGame.currentPlayer.potionValue;
+        int potionValue = this.currentPlayer.potionValue;
 
-        if (RunGame.currentPlayer.health + potionValue > RunGame.currentPlayer.maxHealth)
-            RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
+        if (this.currentPlayer.health + potionValue > this.currentPlayer.maxHealth)
+            this.currentPlayer.health = this.currentPlayer.maxHealth;
 
-        if (RunGame.currentPlayer.health < RunGame.currentPlayer.maxHealth)
+        if (this.currentPlayer.health < this.currentPlayer.maxHealth)
         {
             string[] text = new[]
             {
@@ -101,7 +107,7 @@ public class Player_Combat_Text
             Console.WriteLine(healingText);
 
             //Add the potion health value to the player's Health
-            RunGame.currentPlayer.health += potionValue;
+            this.currentPlayer.health += potionValue;
             
             //Check if the Enemy's HP is below a third
             if (EnemyStats.healthEnemy <= EnemyStats.maxHealthEnemy / 3)
@@ -113,7 +119,7 @@ public class Player_Combat_Text
                         enemyText.EnemyHeals();
                         break;
                     case 1:
-                        enemyCombat.EnemyAttacks();
+                        enemyChoice.EnemyAttacks();
                         break;
                     default:
                         enemyText.EnemyHeals();
@@ -173,7 +179,7 @@ public class Player_Combat_Text
 
     void EnemyFailedDefense()
     {
-        int dealDamage = RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue;
+        int dealDamage = this.currentPlayer.damage + this.currentPlayer.weaponValue;
         
         //Display the text here of when the Enemy Defends
         string[] textFailed = new[]
@@ -209,7 +215,7 @@ public class Player_Combat_Text
 
         void EnemyFailedHealing()
         {
-            int dealDamage = (RunGame.currentPlayer.damage + RunGame.currentPlayer.weaponValue)
+            int dealDamage = (this.currentPlayer.damage + this.currentPlayer.weaponValue)
                              + rand.Next(3, 12);
 
             string[] text = new[]

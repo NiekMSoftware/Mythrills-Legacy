@@ -5,8 +5,10 @@ namespace RPG.EnemyCombat;
 public class Enemy_Choice
 {
     //References to other classes
-    private static PlayerInput _playerInput = new PlayerInput();
-    private Enemy_Combat_Text _enemyText = new Enemy_Combat_Text();
+    private PlayerInput _playerInput;
+    public Player currentPlayer;
+
+    private Enemy_Combat_Text _enemyText;
     
     //Boolean
     public static bool isDefending;
@@ -15,6 +17,13 @@ public class Enemy_Choice
     
     //Random
     private static Random rand = new Random();
+
+    public Enemy_Choice(Player _player)
+    {
+        this.currentPlayer = _player;
+        this._playerInput = new PlayerInput(this.currentPlayer);
+        this._enemyText = new Enemy_Combat_Text(this.currentPlayer);
+    }
 
     //Enemy chooses with a random what to do
     public void EnemyChoice()

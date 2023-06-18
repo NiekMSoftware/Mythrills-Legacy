@@ -6,20 +6,29 @@ namespace RPG;
 public class PlayerInput
 {
     //Enemy stats
-    private static EnemyStats _enemy = new EnemyStats();
+    private EnemyStats _enemy = new EnemyStats();
     
     //Combat Enemy and Player
-    private Enemy_Choice enemyCombat = new Enemy_Choice();
-    private Enemy_Combat_Text enemyText = new Enemy_Combat_Text();
-    private Player_Combat_Text playerText = new Player_Combat_Text();
+    private Enemy_Choice enemyChoice;
+    private Enemy_Combat_Text enemyText;
+    
+    private Player_Combat_Text playerText;
     
     //Random
-    private static Random rand = new Random();
+    private Random rand = new Random();
+    // Player
+    public Player currentPlayer;
 
     public bool isAttacking;
     public static bool isHealing;
 
-    //TODO: Check if the player is healing, and when they are let the AI heal too
+    public PlayerInput(Player player)
+    {
+        this.currentPlayer = player;
+        //this.playerText = new Player_Combat_Text(this.currentPlayer);
+        //this.enemyChoice = new Enemy_Choice(this.currentPlayer);
+        //this.enemyText = new Enemy_Combat_Text(this.currentPlayer);
+    }
 
     /*
      * Receive the Player's Input
@@ -54,22 +63,22 @@ public class PlayerInput
         isAttacking = true;
         
         //Check if the enemy is faster than the player
-        if (EnemyStats.speedEnemy > RunGame.currentPlayer.speed)
+        if (EnemyStats.speedEnemy > this.currentPlayer.speed)
         {
             //Run the enemy script
-            enemyCombat.EnemyChoice();
+            enemyChoice.EnemyChoice();
             
             //Run the Player Attack 
             playerText.PlayerAttackSlow();
             
         } // If not then run the other combat
-        else if (RunGame.currentPlayer.speed > EnemyStats.speedEnemy)
+        else if (this.currentPlayer.speed > EnemyStats.speedEnemy)
         {
             //First run the Player Combat
             playerText.PlayerAttackFast();
 
             //After the Player Combat run the Enemy combat
-            enemyCombat.EnemyChoice();
+            enemyChoice.EnemyChoice();
         }
         
         Console.ReadLine();
@@ -78,15 +87,15 @@ public class PlayerInput
     private void Defend()
     {
         //The power of the enemy will be lessened
-        int damageTaken = (EnemyStats.powerEnemy / 3) - RunGame.currentPlayer.armorValue;
+        int damageTaken = (EnemyStats.powerEnemy / 3) - this.currentPlayer.armorValue;
         if (damageTaken < 0)
             damageTaken = 0;
 
         //Make a random value so it will negate damage back to the enemy in our Defensive stance
-        int dealDamage = rand.Next(2, RunGame.currentPlayer.weaponValue);
+        int dealDamage = rand.Next(2, this.currentPlayer.weaponValue);
 
         //Make a random value to gain health back
-        int gainHealth = rand.Next(5, RunGame.currentPlayer.minHealthHealing);
+        int gainHealth = rand.Next(5, this.currentPlayer.minHealthHealing);
 
         //Make an array with different texts when defending
         string text = "";
@@ -118,21 +127,21 @@ public class PlayerInput
         if (rand.Next(1, 51) == 1)
         {
             //Gain health when successful
-            RunGame.currentPlayer.health += gainHealth;
+            this.currentPlayer.health += gainHealth;
 
             Console.WriteLine(defendTextHealth[0]);
 
             //Return health back to the max when higher 
-            if (RunGame.currentPlayer.health >= RunGame.currentPlayer.maxHealth)
+            if (this.currentPlayer.health >= this.currentPlayer.maxHealth)
             {
-                RunGame.currentPlayer.health = RunGame.currentPlayer.maxHealth;
+                this.currentPlayer.health = this.currentPlayer.maxHealth;
             }
         }
         else
         {
             Console.WriteLine(text);
             //Lower health
-            RunGame.currentPlayer.health -= damageTaken;
+            this.currentPlayer.health -= damageTaken;
             EnemyStats.healthEnemy -= dealDamage;
         }
 
@@ -141,13 +150,13 @@ public class PlayerInput
     
     private void Heal()
     {
-        int maxHealth = RunGame.currentPlayer.maxHealth;
+        int maxHealth = this.currentPlayer.maxHealth;
 
         //Check how many potions our player has left
-        if (RunGame.currentPlayer.potions == 0)
+        if (this.currentPlayer.potions == 0)
         {
             //Calculate how much health we will lose upon no flasks
-            int damageTaken = EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue;
+            int damageTaken = EnemyStats.powerEnemy - this.currentPlayer.armorValue;
             if (damageTaken < 0)
                 damageTaken = 0;
 
@@ -168,10 +177,10 @@ public class PlayerInput
     {
         int nonDamageTaken = 0;
 
-            int damageTaken = (EnemyStats.powerEnemy - RunGame.currentPlayer.armorValue) + rand.Next(8, 22);
+            int damageTaken = (EnemyStats.powerEnemy - this.currentPlayer.armorValue) + rand.Next(8, 22);
 
             //Make the Leap rng, so there is a chance you will get hit
-            if (rand.Next(0, RunGame.currentPlayer.leap) == 0)
+            if (rand.Next(0, this.currentPlayer.leap) == 0)
             {
                 string text = "";
                 string[] leapFailure = new[]
@@ -197,7 +206,7 @@ public class PlayerInput
                 Console.WriteLine(text);
 
                 //Receive damage
-                RunGame.currentPlayer.health -= damageTaken;
+                this.currentPlayer.health -= damageTaken;
             }
             else
             {

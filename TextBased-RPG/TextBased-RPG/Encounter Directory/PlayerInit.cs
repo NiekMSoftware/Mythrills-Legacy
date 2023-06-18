@@ -2,25 +2,31 @@
 
 namespace RPG;
 
-public class RunGame
+public class PlayerInit
 {
     private bool enteredOptionsKey;
     
     //Reference to the Player Script
-    public static Player currentPlayer = new Player();
+    public Player currentPlayer;
     
     //Make a unending loop
-    public static bool mainLoop = true;
+    //public static bool mainLoop = true;
     
     // Boolean for player Name
-    public static bool hasNoName;
+    public bool hasNoName;
 
-    public void StartGame()
+    public PlayerInit(Player player)
     {
-        hasNoName = false;
+        currentPlayer = player;
+        InitPlayer();
+    }
+    
+    public void InitPlayer()
+    {
+        hasNoName = true;
         Console.Clear();
 
-        while (!hasNoName)
+        while (hasNoName)
         {
             // Ask the player for their name
             Console.WriteLine("What is your name Traveller?");
@@ -36,19 +42,13 @@ public class RunGame
             {
                 Console.WriteLine($"Hmm.. alright {name}! You must embark on a journey");
                 Console.ReadKey();
-                Console.WriteLine("It won't be easy.. but I know you can do it!");
+                Console.WriteLine("It won't be easy.. but I know you can do it! Press any key...");
                 Console.ReadKey();
                 Console.Clear();
-                hasNoName = true;
+                currentPlayer.name = name;
+                hasNoName = false;
             }
 
         }
-       
-        while (mainLoop)
-            Room.Run();
-        
-        // Clear out the console
-        Console.ReadKey();
-        Console.Clear();
     }
 }

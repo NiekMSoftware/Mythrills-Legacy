@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace RPG.Room_Generation;
 
@@ -9,14 +10,21 @@ public class Room
 
     public static int currentBiome;
     private static int currentCity;
-    
-    public static void Run()
+    public Player currentplayer;
+    public Encounter encounter;
+
+    public Room(Player player)
+    {
+        this.currentplayer = player;
+        this.encounter = new Encounter(this.currentplayer);
+    }
+    public void Run()
     {
         GenerationBiomes();
         RunGeneration();
     }
     
-    static void RunGeneration()
+    void RunGeneration()
     {
         while (true)
         {
@@ -369,7 +377,7 @@ public class Room
 
     #region RunGeneration
 
-    static void RunBiome()
+    void RunBiome()
     {
         Generation activeBiome = biomes[currentBiome]; 
         
@@ -445,7 +453,7 @@ public class Room
         if (biomes[currentBiome].areaEnemiesEncounter)
         {
             Console.Clear();
-            Encounter.SkeletonEncounter();
+            this.encounter.SkeletonEncounter();
             
             biomes[currentBiome].areaEnemiesEncounter = false;
         }

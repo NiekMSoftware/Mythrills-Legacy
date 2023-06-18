@@ -1,30 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RPG.Room_Generation;
 
 namespace RPG;
 
 public class Game
 {
+    private WarningScreen _warning;
+    private TitleScreen _titleScreen;
+    public Player _player;
+    public PlayerInit _playerInit;
+    public MenuNavigation menuNavigation;
+    public Room _room;
+    private bool mainLoop = true;
+    
+    public Game()
+    {
+        this._player = new Player();
+        this._room = new Room(this._player);
+        this.Start();
+        
+        //Run the warning
+        Warning();
+    }
+    
     public void Start()
     {
-       Console.Title = "PLACEHOLDER";
-       //Run the warning
-       Warning();
-       
        //Run the title Screen
-       RunTitleScreen_();
+       RunTitleScreen();
+       
+       // Player init
+       PlayerInit();
+       
+       //Let' s GO!
+       RunGame();
     }
 
     private void Warning()
     {
-        WarningScreen _warning = new WarningScreen();
-        _warning.Warning();
+        _warning = new WarningScreen();
     }
-    public void RunTitleScreen_()
+    public void RunTitleScreen()
     {
-        TitleScreen _titleScreen = new TitleScreen();
-        _titleScreen.RunTitleScreen();
+        _titleScreen = new TitleScreen();
+    }
+
+    public void PlayerInit()
+    {
+        _playerInit = new PlayerInit(_player);
+    }
+
+    public void RunGame()
+    {
+        while (mainLoop)
+            // TODO: Fix room reference
+            this._room.Run();
     }
 
     //Shut down the program
@@ -50,7 +81,7 @@ public class Game
 
     public void RunFirstOption()
     {
-        RunGame _game = new RunGame();
-        _game.StartGame();
+        PlayerInit _game = new PlayerInit(this._player);
+        //_game.StartGame();
     }
 }

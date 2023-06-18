@@ -29,7 +29,5 @@ public class CreditsScreen
         Console.WriteLine(finalMessage);
         
         Console.ReadKey(true);
-        TitleScreen _titleScreen = new TitleScreen();
-        _titleScreen.RunTitleScreen();
     }
 }
