@@ -5,12 +5,11 @@ namespace RPG.Room_Generation;
 public class Room
 {
     //Make an array or list of the Biomes
-    public static Generation[] biomes = new Generation[6];
-    public static Generation[] city = new Generation[6];
-    
-    private static int currentBiome;
-    private static int currentCity;
+    public static Generation[] biomes = new Generation[12];
 
+    public static int currentBiome;
+    private static int currentCity;
+    
     public static void Run()
     {
         GenerationBiomes();
@@ -148,6 +147,8 @@ public class Room
             },
             true,
             false);
+        
+        // Biome 2, Player died
         biomes[2] = new Generation(2,
             new string[]
             {
@@ -159,7 +160,198 @@ public class Room
             },
             new string[]
             {
-               // Choises
+                
+            },
+            new string[]
+            {
+               
+            },
+            new int[]
+            {
+                
+            },
+            false,
+            true);
+        
+        biomes[3] = new Generation(3,
+            new string[]
+            {
+               "The man appears to be some kind of cleric, but clad in black and grey cloth and armor, making him look" +
+                    "rather gloomy...\n",
+               "<< Who're you? Can't say I've seen a face 'rond these parts in the past decade. " +
+                    "'Person's, that is. >>\n",
+               "You could ",
+               "ignore ",
+               "the man, or you could ",
+               "ask more ",
+               "about the city."
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.Gray,
+                ConsoleColor.DarkYellow,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray
+            },
+            new string[]
+            {
+                 "ignore",
+                 "ask more"
+            },
+            new string[]
+            {
+                // Ignore the man
+                "Upon ignoring the man, he clicks his tongue and leaves for the city.\n" +
+                "A short while after, he seems to disappear, leaving you in the dust.\n\n" +
+                "You must enter the gate once more, however, the gate is now unprotected.\n",
+                
+                // Result after asking more
+                "Upon asking more, he tells you the city before you is the great Starlit City itself."
+            },
+            new int[]
+            {
+                // Return back to where the player is at the City
+                4,
+                
+                // Talk to the man
+                5
+            },
+            false,
+            false);
+
+        // Dialogue with the man
+        biomes[5] = new Generation(5,
+            new string[]
+            {
+                // Description city
+               "<< A great city that catches and reflects light from the stars, where the concept of 'dark' doesn't exist.\n" +
+               "A magic formation captures light from the stars and secures it for use within the city >>\n\n",
+               
+               // Give the player the option to ask who you are
+               "Ask ",
+               "who you are ",
+               "to the man (include: ?) \n"
+            },
+            new ConsoleColor[]
+            {
+               ConsoleColor.DarkYellow,
+               ConsoleColor.Gray,
+               ConsoleColor.DarkRed,
+               ConsoleColor.Gray
+            },
+            new string[]
+            {
+                "who am i?"
+            },
+            new string[]
+            {
+               "<< Damn, ‘nother one o’ those, are ya? How the hell should I know? >>\n" +
+               "He looks a little annoyed."
+            },
+            new int[]
+            {
+                6
+            },
+            false,
+            false);
+        
+        // Continue the dialogue with the man
+        biomes[6] = new Generation(6,
+            new string[]
+            {
+               "Upon asking what the man means, he answers:\n",
+               "<< Amnisacs. Buncha dumbasses that don't remember who or what they are.\n" +
+               "All trynna become stronger for some reason though. Bet you're just like that.\n" +
+               "Well, good for you, 'cause Starlit's possesed by a ",
+               "madman.\n",
+               "Dumbass exiled all his citizins and left 'imself with a city of dimwit fighters. Can't even think\n" +
+               "the poor shits. I'd almost cry for 'em. >>\n\n",
+               "The man tells you to leave him alone and come back if you ever find something valuable in the city.\n",
+               "You are free to",
+               " enter",
+               " the city.."
+            },
+            new ConsoleColor[]
+            {
+               ConsoleColor.Gray,
+               ConsoleColor.DarkCyan,
+               ConsoleColor.DarkYellow,
+               ConsoleColor.Gray,
+               ConsoleColor.Gray,
+               ConsoleColor.DarkRed,
+               ConsoleColor.Gray
+            },
+            new string[]
+            {
+                "enter"
+            },
+            new string[]
+            {
+               "You walked down into the city.."
+            },
+            new int[]
+            {
+                7
+            },
+            false,
+            true);
+        
+        // OPTIMAL
+            //Biome 4 || Same as the first Generation, but now the man has left:
+        biomes[4] = new Generation(4,
+            new string[]
+            {
+                "<< Carestavis, Starlit City >> \n",
+                "Upon encountering the city, you noticed no guards atop the city's towering walls,\n",
+                "along with a gate to the ",
+                "north ",
+                "that appeared to have been smashed open by something terrifyingly strong.\n\n",
+                "You are now free to ",
+                "enter ",
+                " the gate.."
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray,
+            },
+            new string[]
+            {
+                "north"
+            },
+            new string[]
+            {
+                "You walked down into the city.."
+            },
+            new int[]
+            {
+                7,
+            },
+            false,
+            false);
+        
+        // Entered the city
+        biomes[7] = new Generation(7,
+            new string[]
+            {
+               
+            },
+            new ConsoleColor[]
+            {
+               
+            },
+            new string[]
+            {
+                
             },
             new string[]
             {
@@ -260,13 +452,13 @@ public class Room
         
         // If the current biome is set for a static player death
             // Insert that down here
-            if (biomes[currentBiome].playerDied)
-            {
-                // Insert logic for player death
-                PlayerDeath.PlayerDiedAtGate();
-                biomes[currentBiome].playerDied = false;
-            }
+        if (biomes[currentBiome].playerDied)
+        {
+            // Insert logic for player death
+            PlayerDeath.PlayerDiedAtGate();
             
+            biomes[currentBiome].playerDied = false;
+        }
     }
 
     #endregion

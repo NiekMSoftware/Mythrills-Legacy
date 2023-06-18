@@ -1,9 +1,16 @@
-﻿namespace RPG;
+﻿using RPG.Room_Generation;
+
+namespace RPG;
 
 public class PlayerDeath
 {
     static Random rand = new Random();
+    
+    // reference to other class
     static Game game = new Game();
+    static Room biome = new Room();
+
+    private static Generation _generation;
     public static void PlayerDiedAtGate()
     {
         // Give in a story for the Player that died at the gate
@@ -35,8 +42,14 @@ public class PlayerDeath
 
         RunGame.currentPlayer.levelCrystal = 0;
         RunGame.currentPlayer.coins = 0;
-        
+
         // Restart Game
-        game.RunTitleScreen_();
+        // game.RunTitleScreen_();
+        
+        
+        
+        // _generation.playerDied = false;
+        // game = new Game();
+
     }
 }
