@@ -10,7 +10,7 @@ public class PlayerInput
     
     //Combat Enemy and Player
     private Enemy_Choice enemyChoice;
-    private Enemy_Combat_Text enemyText;
+    // private Enemy_Combat_Text enemyText;
     
     private Player_Combat_Text playerText;
     
@@ -25,9 +25,9 @@ public class PlayerInput
     public PlayerInput(Player player)
     {
         this.currentPlayer = player;
-        //this.playerText = new Player_Combat_Text(this.currentPlayer);
-        //this.enemyChoice = new Enemy_Choice(this.currentPlayer);
-        //this.enemyText = new Enemy_Combat_Text(this.currentPlayer);
+        this.playerText = new Player_Combat_Text(this.currentPlayer, this);
+        this.enemyChoice = new Enemy_Choice(this.currentPlayer, this);
+        // this.enemyText = new Enemy_Combat_Text(this.currentPlayer);
     }
 
     /*
@@ -68,6 +68,11 @@ public class PlayerInput
             //Run the enemy script
             enemyChoice.EnemyChoice();
             
+            // Check if the enemy is defending
+            if (this.enemyChoice.isDefending) {
+                this.playerText.EnemyDidDefend();
+            }
+            
             //Run the Player Attack 
             playerText.PlayerAttackSlow();
             
@@ -76,9 +81,6 @@ public class PlayerInput
         {
             //First run the Player Combat
             playerText.PlayerAttackFast();
-
-            //After the Player Combat run the Enemy combat
-            enemyChoice.EnemyChoice();
         }
         
         Console.ReadLine();
@@ -151,8 +153,11 @@ public class PlayerInput
     private void Heal()
     {
         int maxHealth = this.currentPlayer.maxHealth;
+        
+        
 
         //Check how many potions our player has left
+
         if (this.currentPlayer.potions == 0)
         {
             //Calculate how much health we will lose upon no flasks
@@ -175,7 +180,7 @@ public class PlayerInput
 
     private void Leap()
     {
-        int nonDamageTaken = 0;
+            int nonDamageTaken = 0;
 
             int damageTaken = (EnemyStats.powerEnemy - this.currentPlayer.armorValue) + rand.Next(8, 22);
 

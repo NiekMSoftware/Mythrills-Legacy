@@ -5,23 +5,24 @@ namespace RPG.EnemyCombat;
 public class Enemy_Choice
 {
     //References to other classes
-    private PlayerInput _playerInput;
+    private PlayerInput playerInput;
     public Player currentPlayer;
 
     private Enemy_Combat_Text _enemyText;
     
     //Boolean
-    public static bool isDefending;
-    public static bool isHealing;
-    public static bool cantHeal;
+    public bool isDefending;
+    public bool isHealing;
+    public bool cantHeal;
     
     //Random
     private static Random rand = new Random();
 
-    public Enemy_Choice(Player _player)
+    public Enemy_Choice(Player _player, PlayerInput _playerInput)
     {
         this.currentPlayer = _player;
-        this._playerInput = new PlayerInput(this.currentPlayer);
+        this.playerInput = _playerInput;
+        
         this._enemyText = new Enemy_Combat_Text(this.currentPlayer);
     }
 

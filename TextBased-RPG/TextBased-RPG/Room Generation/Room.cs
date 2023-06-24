@@ -278,9 +278,9 @@ public class Room
                "Dumbass exiled all his citizins and left 'imself with a city of dimwit fighters. Can't even think\n" +
                "the poor shits. I'd almost cry for 'em. >>\n\n",
                "The man tells you to leave him alone and come back if you ever find something valuable in the city.\n",
-               "You are free to",
-               " enter",
-               " the city.."
+               "You are free to ",
+               "enter ",
+               "the city.."
             },
             new ConsoleColor[]
             {
@@ -305,7 +305,7 @@ public class Room
                 7
             },
             false,
-            true);
+            false);
         
         // OPTIMAL
             //Biome 4 || Same as the first Generation, but now the man has left:
@@ -334,7 +334,7 @@ public class Room
             },
             new string[]
             {
-                "north"
+                "enter"
             },
             new string[]
             {

@@ -17,12 +17,12 @@ public class Game
     
     public Game()
     {
-        this._player = new Player();
-        this._room = new Room(this._player);
-        this.Start();
-        
         //Run the warning
         Warning();
+        
+        this._player = new Player();
+        this._room = new Room(this._player);
+        this.Start(); 
     }
     
     public void Start()

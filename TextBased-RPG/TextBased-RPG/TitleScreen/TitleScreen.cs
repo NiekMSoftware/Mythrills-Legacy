@@ -1,7 +1,8 @@
 ﻿namespace RPG;
 
-public class TitleScreen
-{
+public class TitleScreen {
+    
+    MenuNavigation menuNavigation;
     
     public string title = @"
 (   (                         )    )  (   (         (      
@@ -23,31 +24,38 @@ Welcome to the game! Press any key...
         {
             "Play", "Options", "Credits", "Exit"
         };
-    // public TitleScreen()
-    // {
-    //     MenuNavigation menuNavigation = new MenuNavigation(title, options);
-    //     int selectedIndex = menuNavigation.Run();
-    //
-    //     switch (selectedIndex)
-    //     {
-    //         case 0:
-    //             RunGame _runGame = new RunGame();
-    //             _runGame.StartGame();
-    //             break;
-    //         case 1:
-    //             OptionsScreen _options = new OptionsScreen();
-    //             _options.runOptions();
-    //             break;
-    //         case 2:
-    //             CreditsScreen _credits = new CreditsScreen();
-    //             _credits.RunCredits();
-    //             break;
-    //         case 3:
-    //             Game quit = new Game();
-    //             quit.ExitGame();
-    //             break;
-    //     }
-    // }
+    public TitleScreen() {
+        int numStatus = 1;
+        
+        while (numStatus > 0) {
+            numStatus = this.ShowTitle();
+        }
+    }
+
+    public int ShowTitle() {
+        this.menuNavigation = new MenuNavigation(title, options);
+        int selectedIndex = menuNavigation.Run();
+    
+        switch (selectedIndex)
+        {
+            case 0:
+                break;
+            case 1:
+                OptionsScreen _options = new OptionsScreen();
+                _options.runOptions();
+                break;
+            case 2:
+                CreditsScreen _credits = new CreditsScreen();
+                _credits.RunCredits();
+                break;
+            case 3:
+                Game quit = new Game();
+                quit.ExitGame();
+                break;
+        }
+
+        return selectedIndex;
+    }
 
     public string GetTitle()
     {
