@@ -8,14 +8,19 @@ public class Room
     //Make an array or list of the Biomes
     public static Generation[] biomes = new Generation[12];
 
-    public static int currentBiome;
-    private static int currentCity;
+    public int currentBiome;
+    private int currentCity;
     public Player currentplayer;
     public Encounter encounter;
+    
+    PlayerDeath _playerDeath;
+    Game game;
 
-    public Room(Player player)
+    public Room(Player player, Game game)
     {
         this.currentplayer = player;
+        this.game = game;
+        
         this.encounter = new Encounter(this.currentplayer);
     }
     public void Run()
@@ -460,11 +465,13 @@ public class Room
         
         // If the current biome is set for a static player death
             // Insert that down here
-        if (biomes[currentBiome].playerDied)
-        {
-            // Insert logic for player death
-            PlayerDeath.PlayerDiedAtGate();
+        if (biomes[currentBiome].playerDied) {
+            // Make a new object of the Player Death
+            this._playerDeath = new PlayerDeath(this.currentplayer, this.game);
             
+            // Insert logic for player death
+            this._playerDeath.PlayerDiedAtGate();
+
             biomes[currentBiome].playerDied = false;
         }
     }

@@ -49,8 +49,8 @@ Welcome to the game! Press any key...
                 _credits.RunCredits();
                 break;
             case 3:
-                Game quit = new Game();
-                quit.ExitGame();
+                ExitGame quit = new ExitGame();
+                quit.Exit();
                 break;
         }
 

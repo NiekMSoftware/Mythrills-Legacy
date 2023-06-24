@@ -20,13 +20,14 @@ public class Game
         //Run the warning
         Warning();
         
-        this._player = new Player();
-        this._room = new Room(this._player);
         this.Start(); 
     }
     
     public void Start()
     {
+        this._player = new Player();
+        this._room = new Room(this._player, this);
+        
        //Run the title Screen
        RunTitleScreen();
        
