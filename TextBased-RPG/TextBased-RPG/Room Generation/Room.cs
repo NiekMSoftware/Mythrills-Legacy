@@ -6,7 +6,7 @@ namespace RPG.Room_Generation;
 public class Room
 {
     //Make an array or list of the Biomes
-    public static Generation[] biomes = new Generation[12];
+    public static Generation[] biomes = new Generation[20];
 
     public int currentBiome;
     private int currentCity;
@@ -21,7 +21,7 @@ public class Room
         this.currentplayer = player;
         this.game = game;
         
-        this.encounter = new Encounter(this.currentplayer);
+        this.encounter = new Encounter(this.currentplayer, this.game);
     }
     public void Run()
     {
@@ -63,11 +63,15 @@ public class Room
     }
 
     #endregion
+
+    void CidricFight() {
+        this.encounter.CidricEncounter();
+    }
     
     #region Generate Envoirenment
     
     // Generate all the biomes
-    public static void GenerationBiomes()
+    public void GenerationBiomes()
     {
         // Story Prologue:
         Prologue1();
@@ -83,7 +87,7 @@ public class Room
                 "and decided to ask around if they found anyone.\n\n",
                 "In the night, a bright city at ",
                 "south ",
-                "lit up the skies themselves, seemingly stronger than the stars."
+                "lit up the skies themselves, seemingly stronger than the stars.\n"
             },
             new ConsoleColor[]
             {
@@ -110,6 +114,7 @@ public class Room
                1
             },
             false,
+            false,
             false);
         
         // Biome 2:
@@ -123,7 +128,7 @@ public class Room
                 "that appeared to have been smashed open by something terrifyingly strong.\n\n",
                 "Strangely, a tent seemed to have been set down to the ",
                 "west ",
-                "next to the gates."
+                "next to the gates.\n"
             },
             new ConsoleColor[]
             {
@@ -159,6 +164,7 @@ public class Room
                 3
             },
             true,
+            false,
             false);
         
         // Biome 2, Player died
@@ -184,6 +190,7 @@ public class Room
                 
             },
             false,
+            false,
             true);
         
         biomes[3] = new Generation(3,
@@ -197,7 +204,7 @@ public class Room
                "ignore ",
                "the man, or you could ",
                "ask more ",
-               "about the city."
+               "about the city.\n"
             },
             new ConsoleColor[]
             {
@@ -233,6 +240,7 @@ public class Room
                 5
             },
             false,
+            false,
             false);
 
         // Dialogue with the man
@@ -243,7 +251,7 @@ public class Room
                "<< A great city that catches and reflects light from the stars, where the concept of 'dark' doesn't exist.\n" +
                "A magic formation captures light from the stars and secures it for use within the city >>\n\n",
                
-               // Give the player the option to ask who you are
+               // Give the player the option to ask who they are
                "Ask ",
                "who you are ",
                "to the man (include: ?) \n"
@@ -269,6 +277,7 @@ public class Room
                 6
             },
             false,
+            false,
             false);
         
         // Continue the dialogue with the man
@@ -285,13 +294,14 @@ public class Room
                "The man tells you to leave him alone and come back if you ever find something valuable in the city.\n",
                "You are free to ",
                "enter ",
-               "the city.."
+               "the city..\n"
             },
             new ConsoleColor[]
             {
                ConsoleColor.Gray,
                ConsoleColor.DarkCyan,
                ConsoleColor.DarkYellow,
+               ConsoleColor.Gray,
                ConsoleColor.Gray,
                ConsoleColor.Gray,
                ConsoleColor.DarkRed,
@@ -310,6 +320,7 @@ public class Room
                 7
             },
             false,
+            false,
             false);
         
         // OPTIMAL
@@ -324,7 +335,7 @@ public class Room
                 "that appeared to have been smashed open by something terrifyingly strong.\n\n",
                 "You are now free to ",
                 "enter ",
-                " the gate.."
+                "the gate..\n"
             },
             new ConsoleColor[]
             {
@@ -347,35 +358,237 @@ public class Room
             },
             new int[]
             {
-                7,
+                7
             },
+            false,
             false,
             false);
         
+       
         // Entered the city
-        biomes[7] = new Generation(7,
+        biomes[7] = new Generation(8,
             new string[]
             {
-               
+               "In the city there's a ",
+               "church,\n",
+               "a manor next to the church, a ",
+               "park ",
+               "and a ",
+               "central square.\n"
             },
             new ConsoleColor[]
             {
-               
+               ConsoleColor.Gray,
+               ConsoleColor.DarkRed,
+               ConsoleColor.Gray,
+               ConsoleColor.DarkRed,
+               ConsoleColor.Gray,
+               ConsoleColor.DarkRed
             },
             new string[]
             {
-                
+                "park",
+                "central square",
+                "church"
             },
             new string[]
             {
-               
+               "You enter the park carefully...",
+               "You entered the city square, but...",
+               "You made your way to the church.."
             },
             new int[]
             {
-                
+               8,
+               9,
+               10
             },
             false,
+            false,
+            false);
+        
+        // Entered the park
+        biomes[8] = new Generation(8,
+            new string[]
+            {
+                "<< Carestavis, Starlit City >>\n\n",
+                "Inside the park, you find a single man siting on his knees,\n" +
+                "looking as though his soul was pulled from him.\n",
+                "You could either ",
+                "loot ",
+                "the man's corpse. Or, ",
+                "leave ",
+                "him be.\n"
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.DarkCyan,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray
+            },
+            new string[]
+            {
+                "loot",
+                "leave"
+            },
+            new string[]
+            {
+                "Upon looting him, you acquire the << Aristocratic Note >> \n" +
+                "that will allow you to recruit help for beating the Final Boss.",
+                
+                "You decided to leave the man alone, praying for a peaceful going for the man..."
+            },
+            new int[]
+            {
+                // Looting | Return to where you came from
+                11,
+                
+                // Back to the previous one
+                7
+            },
+            false,
+            false,
+            false);
+        
+        // Back to where the player came from
+        biomes[11] = new Generation(11,
+            new string[]
+            {
+                "You came back from where you came from,\n" +
+                "you could either go to the ",
+                "city square ",
+                "or go to the ",
+                "church.\n"
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed
+            },
+            new string[]
+            {
+               "city square",
+               "church"
+            },
+            new string[]
+            {
+                "You entered the city square, but...",
+                "You made your way to the church.."
+            },
+            new int[]
+            {
+               9,
+               10
+            },
+            false,
+            false,
+            false);
+        
+        // Entered the city square
+        biomes[9] = new Generation(9,
+            new string[]
+            {
+                "<< City Square - Carestavis, Starlit City >>\n\n",
+               "The city square is crawling with dimwit soldiers,\n" +
+               "rather weak opponents one on one, however, with the large amount of them,\n" +
+               "you got overwhelmed and lost the grip on your weapon."
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.DarkCyan,
+                ConsoleColor.Gray
+            },
+            new string[]
+            {
+               
+            },
+            new string[]
+            {
+                
+            },
+            new int[]
+            {
+               
+            },
+            false,
+            false,
             true);
+        
+        // Entered the Church
+        biomes[10] = new Generation(10,
+            new string[]
+            {
+                "<< Church of Henrika - Carestavis, Starlit City >>\n\n",
+               "Inside the church, you found the ",
+               "Starlit Spear,\n",
+               "a weapon that can only be wielded when met with the right requirements.\n\n",
+               "Take ",
+               "the Spear\n"
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.DarkCyan,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkCyan,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray
+            },
+            new string[]
+            {
+               "take"
+            },
+            new string[]
+            {
+                "Upon trying to take the weapon...\n" +
+                "Cidric, Last of the Knights stopped you and charged at you!"
+            },
+            new int[]
+            {
+               12
+            },
+            false,
+            false,
+            false);
+        
+        // After the fight
+        biomes[12] = new Generation(12,
+            new string[]
+            {
+                "Once you have defeated Cidric, you look around the church for,\n",
+                "the entrance of the Manor.\n\n",
+                "To be continued..."
+            },
+            new ConsoleColor[]
+            {
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.Gray,
+                ConsoleColor.DarkRed,
+                ConsoleColor.DarkRed,
+                ConsoleColor.Gray
+            },
+            new string[]
+            {
+              
+            },
+            new string[]
+            {
+                
+            },
+            new int[]
+            {
+               
+            },
+            false,
+            true,
+            false);
     }
 
     #endregion
@@ -453,6 +666,49 @@ public class Room
                 Console.Clear();
             }
         }
+        else if (biomes[currentBiome].choices.Length == 3)
+        {
+            //Check if the roomChoice is equal to the Input
+            if (biomes[currentBiome].choices[0] == input)
+            {
+                Console.Clear();
+
+                Console.WriteLine(biomes[currentBiome].results[0]);
+                currentBiome = biomes[currentBiome].exit[0];
+                
+                // Clear out the console
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else if (biomes[currentBiome].choices[1] == input)
+            {
+                Console.Clear();
+                
+                Console.WriteLine(biomes[currentBiome].results[1]);
+                currentBiome = biomes[currentBiome].exit[1];
+                
+                // Clear out the console
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else if (biomes[currentBiome].choices[2] == input)
+            {
+                Console.Clear();
+                
+                Console.WriteLine(biomes[currentBiome].results[2]);
+                currentBiome = biomes[currentBiome].exit[2];
+                
+                // Clear out the console
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                Console.WriteLine("Please enter a valid Input..");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
         
         // If the current biome has an enemy run the combat
         if (biomes[currentBiome].areaEnemiesEncounter)
@@ -462,6 +718,15 @@ public class Room
             
             biomes[currentBiome].areaEnemiesEncounter = false;
         }
+
+        if (biomes[this.currentBiome].miniBossBattle) {
+            Console.Clear();
+            
+            // Run the combat
+            this.encounter.CidricEncounter();
+
+            biomes[this.currentBiome].miniBossBattle = false;
+        }
         
         // If the current biome is set for a static player death
             // Insert that down here
@@ -470,7 +735,7 @@ public class Room
             this._playerDeath = new PlayerDeath(this.currentplayer, this.game);
             
             // Insert logic for player death
-            this._playerDeath.PlayerDiedAtGate();
+            this._playerDeath.PlayerDied();
 
             biomes[currentBiome].playerDied = false;
         }
@@ -491,10 +756,11 @@ public class Generation
     public int[] exit;
     
     public bool areaEnemiesEncounter;
+    public bool miniBossBattle;
     public bool playerDied;
 
     public Generation(int _biomeID, string[] _description, ConsoleColor[] _textColor, string[] _choices, 
-                        string[] _results, int[] _exit, bool _areaEnemiesEncounter, bool _playerDied)
+                        string[] _results, int[] _exit, bool _areaEnemiesEncounter, bool _miniBossBattle, bool _playerDied)
     {
         //Connect up the variables
         biomeID = _biomeID;
@@ -508,6 +774,8 @@ public class Generation
         exit = _exit;
 
         areaEnemiesEncounter = _areaEnemiesEncounter;
+        miniBossBattle = _miniBossBattle;
+        
         playerDied = _playerDied;
     }
 }

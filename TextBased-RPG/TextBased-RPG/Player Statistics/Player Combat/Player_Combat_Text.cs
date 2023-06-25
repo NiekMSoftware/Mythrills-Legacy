@@ -46,7 +46,7 @@ public class Player_Combat_Text
                 $"\nand dealt {dealDamage}",
             
                 //String 2
-                "ye"
+                
                 //String 3
             
                 //String 4

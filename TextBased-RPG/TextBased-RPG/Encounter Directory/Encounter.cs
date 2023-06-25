@@ -10,13 +10,16 @@ public class Encounter
     private Random rand = new Random();
     private PlayerInput _playerInput;
     private Player _player;
-    private static Generation generation;
+    private Generation generation;
+    Game game;
     
     #endregion
-
-    public Encounter(Player player)
+    
+    public Encounter(Player player, Game game)
     {
         this._player = player;
+        this.game = game;
+        
         this._playerInput = new PlayerInput(this._player);
     }
     
@@ -28,8 +31,15 @@ public class Encounter
         Combat(false, "Human Rogue", 20,32, 100, 69);
     }
 
-    #region BiomeEncounters
+    public void CidricEncounter() {
+        Console.WriteLine("Cidric stood before you with a mighty pose...");
+        Console.ReadLine();
+        
+        Combat(false, "Cidric, Last of the Knights", 20, 25, 150, 10);
+    }
 
+    #region BiomeEncounters
+    
     public void SkeletonEncounter()
     {
         string[] text = new[]
@@ -205,27 +215,7 @@ public class Encounter
 
     public void ResetPlayer()
     {
-        //Reset all the stats the player got
-        this._player.name = "";
-
-        this._player.minHealthHealing = 20;
-        this._player.health = 100;
-        this._player.maxHealth = 100;
-        this._player.armorValue = 0;
-
-        this._player.damage = 10;
-        
-        this._player.level = 1;
-        this._player.exp = 0;
-
-        this._player.evasion = 20;
-        this._player.leap = 10;
-        
-        this._player.coins = 0;
-        this._player.potions = 3;
-        this._player.potionValue = 30;
-
-        this._player.weaponValue = 15;
+        game.Start();
     }
     
 

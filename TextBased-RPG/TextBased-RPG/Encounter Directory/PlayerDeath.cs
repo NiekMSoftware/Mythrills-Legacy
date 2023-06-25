@@ -13,18 +13,45 @@ public class PlayerDeath
 
     Player currentPlayer;
     Game game;
+
+    public bool diedAtGate;
+    public bool died;
+
+    void CheckPlayerDeath() {
+        if (this.diedAtGate) {
+            this.PlayerDied();    
+        }
+        
+        else if (this.died) {
+            
+        }
+    }
     
     public PlayerDeath(Player player, Game game)
     {
         this.currentPlayer = player;
         this.game = game;
-    }
-    public void PlayerDiedAtGate()
+    } 
+    public void PlayerDied()
     {
-        // Give in a story for the Player that died at the gate
-        Console.WriteLine("Upon entering the gates, you are struck in the side by a spear and die.\n");
-        Console.WriteLine("Unfortunate how a legend’s tale can end so abruptly.\n\n");
-       
+        string[] text = {
+            // 1st string
+            "Unfortunately, you are struck in the side by a spear and die.\n" +
+            "Unfortunate how a legend's tale can end so abruptly\n\n",
+            
+            // 2nd string
+            "A dimwit soldier grabbed your head from behind and slit your throat open.\n" +
+            "You collapsed on the ground as you hear in your final moments that the dimwit soldier is laughing at you\n\n",
+            
+            // 3rd string
+            "You got struck by a mighty spear from behind, piercing straight through your chest\n",
+            "Upon reaching your hand to your chest you collapse and die\n\n"
+        };
+
+        string deathText = text[rand.Next(text.Length)];
+
+        Console.WriteLine(deathText);
+        
         Console.ReadKey();
         Console.Clear();
 

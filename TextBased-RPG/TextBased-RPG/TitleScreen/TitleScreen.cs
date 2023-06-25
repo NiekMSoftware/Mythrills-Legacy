@@ -15,12 +15,15 @@ public class TitleScreen {
 |_| |____|/_/ \_\  \___|___|_||_|\___/|____|___/|___|_|_\ 
 Welcome to the game! Press any key...
 
+DEMO 
+
+Alpha v1.5.0
 ";
         
         /*
         * Display title screen and its further navigational settings
         */
-    public string[] options =
+     public string[] options =
         {
             "Play", "Options", "Credits", "Exit"
         };
