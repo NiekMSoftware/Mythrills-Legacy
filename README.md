@@ -7,7 +7,7 @@ Mythrill's Legacy is a Souls-like RPG game that is also TextBased played via the
 (Future plans are to make it in 3D as well)
 
 
-Contact: niek@melet.com
+Contact: niek+contactme@meletstudios.com
 
 # ALL RIGHTS RESERVED
 Niek Melet
